@@ -4,6 +4,16 @@
 
 Projeto e software desenvolvidos para a matéria de Projeto de Software do curso de Engenharia de Computação UEPG  
 
+## Modelagem
+
+Software desenvolvido de acordo com a modelagem
+
+### Diagramas
+
+#### Diagramas de Classes
+
+[Diagramas](/docs/modelagem/diagramas/classes.md)
+
 ## Tecnologias e Ferramentas Utilizadas
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
