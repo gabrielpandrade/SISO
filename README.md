@@ -10,9 +10,7 @@ Software desenvolvido de acordo com a modelagem
 
 ### Diagramas
 
-#### Diagramas de Classes
-
-[Diagramas](/docs/modelagem/diagramas/classes.md)
+#### [Diagramas de Classes](/docs/modelagem/diagramas/classes.md)
 
 ## Tecnologias e Ferramentas Utilizadas
 
