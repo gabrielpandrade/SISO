@@ -14,6 +14,8 @@ Software desenvolvido de acordo com a modelagem
 
 #### [Diagramas de Classes](/docs/modelagem/diagramas/classes.md)
 
+#### [Diagramas de Sequência](/docs/modelagem/diagramas/sequencia.md)
+
 ## Tecnologias e Ferramentas Utilizadas
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
