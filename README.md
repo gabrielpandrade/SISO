@@ -16,6 +16,10 @@ Software desenvolvido de acordo com a modelagem
 
 #### [Diagramas de Sequência](/docs/modelagem/diagramas/sequencia.md)
 
+### Dicionário
+
+#### [Dicionario de dados](/docs/modelagem/dicionario.md)
+
 ## Tecnologias e Ferramentas Utilizadas
 
 ### Backend
