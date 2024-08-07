@@ -9,6 +9,7 @@ classDiagram
         -id_usuario : Long
         -login : String
         -senha : String
+        -perfil : PerfilEnum
     }
 
     class UsuarioController {
@@ -44,8 +45,8 @@ classDiagram
     class ItemMovimento {
         <<entity>>
         -id_movimento : Long
-        -operacao : Character
-        -modalidade_pagamento : Character
+        -operacao : OpercaoEnum
+        -modalidade_pagamento : ModalidadeEnum
         -valor : Double
         -data_hora_movimento : Timestamp
         -descricao_complementar : String
@@ -174,8 +175,8 @@ classDiagram
     class ItemMovimento {
         <<entity>>
         -id_movimento : Long
-        -operacao : Character
-        -modalidade_pagamento : Character
+        -operacao : OpercaoEnum
+        -modalidade_pagamento : ModalidadeEnum
         -valor : Double
         -data_hora_movimento : Timestamp
         -descricao_complementar : String
@@ -749,6 +750,7 @@ classDiagram
         -id_usuario : Long
         -login : String
         -senha : String
+        -perfil : PerfilEnum
     }
 
     class Caixa {
@@ -761,8 +763,8 @@ classDiagram
     class ItemMovimento {
         <<entity>>
         -id_movimento : Long
-        -operacao : Character
-        -modalidade_pagamento : Character
+        -operacao : OpercaoEnum
+        -modalidade_pagamento : ModalidadeEnum
         -valor : Double
         -data_hora_movimento : Timestamp
         -descricao_complementar : String
