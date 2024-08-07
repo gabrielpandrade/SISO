@@ -1,5 +1,7 @@
 # Diagramas de Classes
 
+[voltar](../../../README.md)
+
 ## Diagrama I - Relações entidade-entidade entidade-controle
 
 ```mermaid

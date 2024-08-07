@@ -1,5 +1,7 @@
 # Diagramas de Sequência
 
+[voltar](../../../README.md)
+
 ## Diagrama - Cadastrar Dentista
 
 ```mermaid
