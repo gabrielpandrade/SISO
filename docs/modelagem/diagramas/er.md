@@ -44,16 +44,16 @@ erDiagram
 
     dentista {
         long id_dentista PK
-        text nome
-        character[10] CRO
-        character[11] CPF
+        text nome UK
+        character[10] CRO UK
+        character[11] CPF UK
         character[11] fone
         real percentual_recebido
     }
 
     fornecedor {
         long id_fornecedor PK
-        text nome
+        text nome UK
         character[11] fone
         text endereco
     }

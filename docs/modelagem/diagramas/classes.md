@@ -45,8 +45,8 @@ classDiagram
     class ItemMovimento {
         <<entity>>
         -id_movimento : Long
-        -operacao : OpercaoEnum
-        -modalidade_pagamento : ModalidadeEnum
+        -operacao : Character
+        -modalidade_pagamento : Character
         -valor : Double
         -data_hora_movimento : Timestamp
         -descricao_complementar : String
@@ -175,8 +175,8 @@ classDiagram
     class ItemMovimento {
         <<entity>>
         -id_movimento : Long
-        -operacao : OpercaoEnum
-        -modalidade_pagamento : ModalidadeEnum
+        -operacao : Character
+        -modalidade_pagamento : Character
         -valor : Double
         -data_hora_movimento : Timestamp
         -descricao_complementar : String
@@ -763,8 +763,8 @@ classDiagram
     class ItemMovimento {
         <<entity>>
         -id_movimento : Long
-        -operacao : OpercaoEnum
-        -modalidade_pagamento : ModalidadeEnum
+        -operacao : Character
+        -modalidade_pagamento : Character
         -valor : Double
         -data_hora_movimento : Timestamp
         -descricao_complementar : String
