@@ -9,6 +9,7 @@ classDiagram
         -id_usuario : Long
         -login : String
         -senha : String
+        -ativo : Boolean
         -perfil : PerfilEnum
     }
 
@@ -750,6 +751,7 @@ classDiagram
         -id_usuario : Long
         -login : String
         -senha : String
+        -ativo : Boolean
         -perfil : PerfilEnum
     }
 

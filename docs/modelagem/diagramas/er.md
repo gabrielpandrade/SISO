@@ -19,6 +19,7 @@ erDiagram
         text login UK
         text senha 
         enum perfil
+        boolean ativo
     }
 
     caixa {
