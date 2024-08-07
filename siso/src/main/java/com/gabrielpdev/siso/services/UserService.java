@@ -78,7 +78,9 @@ public class UserService {
     @Transactional
     public void updateUser(User obj) {
         User newObj = this.findById(obj.getId());
-        newObj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
+        if(isSelf(obj.getId())){
+            newObj.setPassword(this.bCryptPasswordEncoder.encode(obj.getPassword()));
+        }
         newObj.setEmail(obj.getEmail());
         if(isAdmin()){
             newObj.setProfiles(obj.getProfiles().stream().map(x -> x.getCode()).collect(Collectors.toSet()));
@@ -174,4 +176,12 @@ public class UserService {
         }
         return true;
     }
+
+    private Boolean isSelf(Long id) {
+        UserSpringSecurity userSpringSecurity = authenticated();
+        if(!Objects.nonNull(userSpringSecurity) || !id.equals(userSpringSecurity.getId()) ) {
+            return false;
+        }
+        return true;
+    } 
 }

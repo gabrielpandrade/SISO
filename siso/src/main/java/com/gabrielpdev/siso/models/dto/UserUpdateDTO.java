@@ -1,6 +1,5 @@
 package com.gabrielpdev.siso.models.dto;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.validation.constraints.Email;
@@ -24,7 +23,7 @@ public class UserUpdateDTO {
     @Size(max = 320)
     private String email;
 
-    private Set<Integer> profiles = new HashSet<>();
+    private Set<Integer> profiles;
 
     private Boolean ativo;
 }

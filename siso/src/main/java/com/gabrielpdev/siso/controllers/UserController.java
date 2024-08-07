@@ -67,7 +67,7 @@ public class UserController {
     }
 
     /**
-     * POST: /api/usuario/:id_usuario - Atualiza o usuario por id
+     * PUT: /api/usuario/:id_usuario - Atualiza o usuario por id
      * @param id id do usuario
      * @param userDTO objeto usuario
      * @return
