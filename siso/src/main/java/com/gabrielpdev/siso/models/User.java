@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.gabrielpdev.siso.models.enums.ProfileEnum;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
