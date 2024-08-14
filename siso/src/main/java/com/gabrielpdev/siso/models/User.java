@@ -53,7 +53,6 @@ public class User {
     private String email;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @JsonProperty(access = Access.WRITE_ONLY)
     @CollectionTable(name = "tipo_usuario", joinColumns = @JoinColumn(name = "id_usuario"))
     @Column(name = "tipo", unique = false, nullable = false, insertable = true, updatable = true)
     private Set<String> profiles = new HashSet<>();
