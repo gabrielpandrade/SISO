@@ -1,4 +1,4 @@
-package com.gabrielpdev.siso.services.exceptions;
+package com.gabrielpdev.siso.models.exceptions;
 
 import org.springframework.security.access.AccessDeniedException;
 

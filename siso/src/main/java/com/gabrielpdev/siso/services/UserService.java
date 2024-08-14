@@ -16,9 +16,9 @@ import com.gabrielpdev.siso.models.dto.UserUpdateDTO;
 import com.gabrielpdev.siso.models.enums.ProfileEnum;
 import com.gabrielpdev.siso.repositories.UserRepository;
 import com.gabrielpdev.siso.security.UserSpringSecurity;
-import com.gabrielpdev.siso.services.exceptions.AuthorizationException;
-import com.gabrielpdev.siso.services.exceptions.DataBindingViolationException;
-import com.gabrielpdev.siso.services.exceptions.ObjectNotFoundException;
+import com.gabrielpdev.siso.models.exceptions.AuthorizationException;
+import com.gabrielpdev.siso.models.exceptions.DataBindingViolationException;
+import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -83,7 +83,7 @@ public class UserService {
         }
         newObj.setEmail(obj.getEmail());
         if(isAdmin()){
-            newObj.setProfiles(obj.getProfiles().stream().map(x -> x.getCode()).collect(Collectors.toSet()));
+            newObj.setProfiles(obj.getProfiles().stream().map(ProfileEnum::getCode).collect(Collectors.toSet()));
             newObj.setAtivo(obj.getAtivo());
         }
         this.userRepository.save(newObj);
@@ -171,17 +171,11 @@ public class UserService {
      */
     private Boolean isAdmin() {
         UserSpringSecurity userSpringSecurity = authenticated();
-        if(!Objects.nonNull(userSpringSecurity) || !userSpringSecurity.hasRole(ProfileEnum.ADMIN)) {
-            return false;
-        }
-        return true;
+        return Objects.nonNull(userSpringSecurity) && userSpringSecurity.hasRole(ProfileEnum.ADMIN);
     }
 
     private Boolean isSelf(Long id) {
         UserSpringSecurity userSpringSecurity = authenticated();
-        if(!Objects.nonNull(userSpringSecurity) || !id.equals(userSpringSecurity.getId()) ) {
-            return false;
-        }
-        return true;
+        return Objects.nonNull(userSpringSecurity) && id.equals(userSpringSecurity.getId());
     } 
 }

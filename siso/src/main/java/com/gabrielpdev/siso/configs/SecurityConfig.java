@@ -11,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -47,7 +48,7 @@ public class SecurityConfig {
     @SuppressWarnings("removal")
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults()).csrf(csrf -> csrf.disable());
+        http.cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable);
 
         AuthenticationManagerBuilder authenticationManagerBuilder = http
             .getSharedObject(AuthenticationManagerBuilder.class);
