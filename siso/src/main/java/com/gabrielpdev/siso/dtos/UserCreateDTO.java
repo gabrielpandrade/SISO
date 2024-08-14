@@ -1,6 +1,4 @@
-package com.gabrielpdev.siso.models.dto;
-
-import java.util.Set;
+package com.gabrielpdev.siso.dtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,8 +10,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserUpdateDTO {
+public class UserCreateDTO {
     
+    @NotBlank
+    @Size(min = 2, max = 50)
+    private String username;
+
     @NotBlank
     @Size(min = 8, max = 50)
     private String password;
@@ -22,8 +24,4 @@ public class UserUpdateDTO {
     @Email
     @Size(max = 320)
     private String email;
-
-    private Set<Integer> profiles;
-
-    private Boolean ativo;
 }

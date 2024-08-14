@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.gabrielpdev.siso.models.User;
-import com.gabrielpdev.siso.models.dto.UserCreateDTO;
-import com.gabrielpdev.siso.models.dto.UserUpdateDTO;
+import com.gabrielpdev.siso.dtos.UserCreateDTO;
+import com.gabrielpdev.siso.dtos.UserUpdateDTO;
 import com.gabrielpdev.siso.services.UserService;
 
 import jakarta.validation.Valid;
@@ -33,29 +33,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/usuario")
 @Validated
 public class UserController {
-    
-    /**
-     * Service do usuario
-     */
+
     @Autowired
     UserService userService;
 
-    /**
-     * GET: /api/usuario/:id_usuario - Retorna o usuário por id
-     * @param id id do usuario
-     * @return
-     */
     @GetMapping("/{id_usuario}")
     public ResponseEntity<User> getUsuario(@PathVariable("id_usuario") Long id) {
         User user = this.userService.findById(id);
         return ResponseEntity.ok().body(user);
     }
 
-    /**
-     * POST: /api/usuario - Cria o usuario
-     * @param userDTO
-     * @return
-     */
     @PostMapping
     public ResponseEntity<Void> postUser(@Valid @RequestBody UserCreateDTO userDTO) {
         User user = this.userService.fromDTO(userDTO);
@@ -66,12 +53,6 @@ public class UserController {
         return ResponseEntity.created(uri).build();
     }
 
-    /**
-     * PUT: /api/usuario/:id_usuario - Atualiza o usuario por id
-     * @param id id do usuario
-     * @param userDTO objeto usuario
-     * @return
-     */
     @PutMapping("/{id_usuario}")
     public ResponseEntity<Void> putUser(@PathVariable("id_usuario") Long id,@Valid @RequestBody UserUpdateDTO userDTO) {
         User user = this.userService.fromDTO(userDTO);
@@ -82,11 +63,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    /**
-     * DEL: /api/usuario/:id_usuario - Deleta o usuario
-     * @param id id do usuario
-     * @return
-     */
     @DeleteMapping("/{id_usuario}")
     public ResponseEntity<Void> deleteUserById(@PathVariable("id_usuario") Long id) {
         this.userService.deleteUserById(id);
