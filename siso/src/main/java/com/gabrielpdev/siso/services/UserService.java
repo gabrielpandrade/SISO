@@ -44,7 +44,6 @@ public class UserService {
     @Transactional
     public void createUser(User obj) {
         obj.setId(null);
-        obj.setPassword(obj.getPassword());
         obj.addProfile("USER");
         obj.setAtivo(true);
         this.userRepository.save(obj);

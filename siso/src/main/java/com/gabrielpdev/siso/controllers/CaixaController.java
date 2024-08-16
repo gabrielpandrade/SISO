@@ -5,7 +5,9 @@ import com.gabrielpdev.siso.services.CaixaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +27,10 @@ public class CaixaController {
     @PostMapping("/{id_usuario}")
     public ResponseEntity<Void> postCaixa(@PathVariable Long id_usuario) {
         this.caixaService.abrirCaixa(id_usuario);
-        return ResponseEntity.noContent().build();
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id_usuario}").buildAndExpand(id_usuario).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id_usuario}")

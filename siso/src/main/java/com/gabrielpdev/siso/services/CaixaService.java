@@ -3,6 +3,7 @@ package com.gabrielpdev.siso.services;
 import com.gabrielpdev.siso.models.Caixa;
 import com.gabrielpdev.siso.models.User;
 import com.gabrielpdev.siso.repositories.CaixaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,8 @@ public class CaixaService {
         return caixaRepository.findCaixaByUsuarioAndFechamentoIsNull(user);
     }
 
-    public Caixa abrirCaixa(Long id_usuario) {
+    @Transactional
+    public void abrirCaixa(Long id_usuario) {
         User user = this.userService.findById(id_usuario);
         if (getCaixaAberto(id_usuario).isPresent()) {
             throw new DataIntegrityViolationException("O usuário já possui um caixa aberto");
@@ -37,15 +39,17 @@ public class CaixaService {
         caixa.setAbertura(Timestamp.valueOf(LocalDateTime.now()));
         caixa.setFechamento(null);
 
-        return this.caixaRepository.save(caixa);
+        this.caixaRepository.save(caixa);
     }
 
-    public Caixa fecharCaixa(Long id_usuario) {
+    @Transactional
+    public void fecharCaixa(Long id_usuario) {
         Optional<Caixa> caixa = getCaixaAberto(id_usuario);
         if (caixa.isEmpty()){
             throw new DataIntegrityViolationException("O usuário não possui um caixa aberto");
         }
         caixa.get().setFechamento(Timestamp.valueOf(LocalDateTime.now()));
-        return this.caixaRepository.save(caixa.get());
+
+        this.caixaRepository.save(caixa.get());
     }
 }
