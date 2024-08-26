@@ -27,13 +27,13 @@ public class FornecedorService {
     }
 
     @Transactional
-    public Fornecedor createFornecedor(Fornecedor fornecedor) {
+    public void createFornecedor(Fornecedor fornecedor) {
         fornecedor.setId(null);
-        return fornecedorRepository.save(fornecedor);
+        fornecedorRepository.save(fornecedor);
     }
 
     @Transactional
-    public Fornecedor updateFornecedor(Fornecedor fornecedor) {
+    public void updateFornecedor(Fornecedor fornecedor) {
         Fornecedor newFornecedor = findById(fornecedor.getId());
         newFornecedor.setNome(fornecedor.getNome());
         newFornecedor.setFone(fornecedor.getFone());
