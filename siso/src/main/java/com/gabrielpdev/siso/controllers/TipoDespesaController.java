@@ -21,7 +21,7 @@ public class TipoDespesaController {
     private TipoDespesaService tipoDespesaService;
 
     @GetMapping
-    public ResponseEntity<List<TipoDespesa>> getTipoReceita() {
+    public ResponseEntity<List<TipoDespesa>> getTipoDespesa() {
         return ResponseEntity.ok().body(tipoDespesaService.findAll());
     }
 

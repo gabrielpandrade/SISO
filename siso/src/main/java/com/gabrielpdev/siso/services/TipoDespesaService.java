@@ -45,7 +45,7 @@ public class TipoDespesaService {
         try {
             tipoDespesaRepository.deleteById(id);
         } catch (Exception e) {
-            throw new DataBindingViolationException(" O tipo de despesa não pode ser deletado.");
+            throw new DataBindingViolationException("O tipo de despesa não pode ser deletado.");
         }
     }
 }
