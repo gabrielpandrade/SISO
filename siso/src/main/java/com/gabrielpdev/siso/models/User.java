@@ -1,31 +1,28 @@
 package com.gabrielpdev.siso.models;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
+
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 
-/** 
- * Model para entidade usuario do banco de dados, métodos construtores, Getters e Setters gerados automaicamente por Lombok
- * @author Gabriel Pinto Andrade
- * @version 1.0.0
- * @since 07/08/2024
- */
+
 @Entity
 @Table(name = User.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class User {
     public static final String TABLE_NAME = "usuario";
 
@@ -45,7 +42,7 @@ public class User {
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "email_recuperacao", unique = false, nullable = false, insertable = true, updatable = true, columnDefinition = "TEXT", length = 320)
+    @Column(name = "email", unique = false, nullable = false, insertable = true, updatable = true, columnDefinition = "TEXT", length = 320)
     @NotBlank
     @Email
     @Size(max = 320)
@@ -61,5 +58,21 @@ public class User {
 
     public void addProfile(String profile) {
         this.profiles.add(profile);
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        User user = (User) o;
+        return getId() != null && Objects.equals(getId(), user.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
 }

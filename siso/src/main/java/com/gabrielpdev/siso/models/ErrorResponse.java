@@ -1,4 +1,4 @@
-package com.gabrielpdev.siso.exceptions;
+package com.gabrielpdev.siso.models;
 
 import java.util.ArrayList;
 import java.util.List;

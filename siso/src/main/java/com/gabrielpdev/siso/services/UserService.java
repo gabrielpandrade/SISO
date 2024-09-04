@@ -3,6 +3,8 @@ package com.gabrielpdev.siso.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gabrielpdev.siso.models.User;
@@ -27,6 +29,9 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     /**
      * Procura um usuario por id
      * @param id id do usuario
@@ -37,6 +42,11 @@ public class UserService {
         return obj.orElseThrow(() -> new ObjectNotFoundException("Usuário {id:"+id+"} não encontrado"));
     }
 
+    public User findByUsername(String username) {
+        Optional<User> obj = this.userRepository.findByUsername(username);
+        return obj.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
+    }
+
     /**
      * Cria um usuario
      * @param obj Objeto Usuario
@@ -44,6 +54,7 @@ public class UserService {
     @Transactional
     public void createUser(User obj) {
         obj.setId(null);
+        obj.setPassword(bCryptPasswordEncoder.encode(obj.getPassword()));
         obj.addProfile("USER");
         obj.setAtivo(true);
         this.userRepository.save(obj);
@@ -56,7 +67,7 @@ public class UserService {
     @Transactional
     public void updateUser(User obj) {
         User newObj = this.findById(obj.getId());
-        newObj.setPassword(obj.getPassword());
+        newObj.setPassword(bCryptPasswordEncoder.encode(obj.getPassword()));
         newObj.setEmail(obj.getEmail());
         newObj.setProfiles(obj.getProfiles());
         newObj.setAtivo(obj.getAtivo());

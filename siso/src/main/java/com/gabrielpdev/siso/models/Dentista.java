@@ -2,30 +2,57 @@ package com.gabrielpdev.siso.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = TipoDespesa.TABLE_NAME)
+@Table(name = Dentista.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class TipoDespesa {
-    public static final String TABLE_NAME = "tipo_despesa";
+public class Dentista {
+    public static final String TABLE_NAME = "dentista";
 
-    @Column(name = "id_despesa")
+
+
+
+    @Column(name = "id_dentista")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "descricao")
+    @Column(name = "nome")
     @NotBlank
-    private String descricao;
+    @Size(min = 2, max = 50)
+    private String nome;
+
+    @Column(name = "CPF")
+    @NotBlank
+    @Size(min = 11, max = 11)
+    private String cpf;
+
+    @Column(name = "CRO")
+    @NotBlank
+    @Size(min = 11, max = 11)
+    private String cro;
+
+    @Column(name = "fone", nullable = false, length = 11)
+    @NotBlank
+    @Size(min = 11, max = 11)
+    private String fone;
+
+    @Column(name = "percentual_recebido")
+    @NotNull
+    @Positive
+    private Double percentualRecebido;
 
     @Override
     public final boolean equals(Object o) {
@@ -34,8 +61,8 @@ public class TipoDespesa {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        TipoDespesa that = (TipoDespesa) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        Dentista dentista = (Dentista) o;
+        return getId() != null && Objects.equals(getId(), dentista.getId());
     }
 
     @Override

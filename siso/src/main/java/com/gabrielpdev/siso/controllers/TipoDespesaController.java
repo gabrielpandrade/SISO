@@ -25,7 +25,7 @@ public class TipoDespesaController {
         return ResponseEntity.ok().body(tipoDespesaService.findAll());
     }
 
-    @GetMapping("/{id_tipo_despesa")
+    @GetMapping("/{id_tipo_despesa}")
     public ResponseEntity<TipoDespesa> getTipoDespesaById(@PathVariable("id_tipo_despesa") Long id) {
         return  ResponseEntity.ok().body(tipoDespesaService.findById(id));
     }
@@ -39,7 +39,7 @@ public class TipoDespesaController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id_tipo_despesa")
+    @PutMapping("/{id_tipo_despesa}")
     public ResponseEntity<Void> putTipoDespesa(@PathVariable("id_tipo_despesa") Long id, @RequestBody TipoDespesa tipoDespesa) {
         tipoDespesa.setId(id);
 

@@ -25,7 +25,7 @@ public class FornecedorController {
         return ResponseEntity.ok().body(fornecedorService.findAll());
     }
 
-    @GetMapping("/{id_fornecedor")
+    @GetMapping("/{id_fornecedor}")
     public ResponseEntity<Fornecedor> getFornecedorById(@PathVariable("id_fornecedor") Long id) {
         return  ResponseEntity.ok().body(fornecedorService.findById(id));
     }
@@ -39,7 +39,7 @@ public class FornecedorController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id_fornecedor")
+    @PutMapping("/{id_fornecedor}")
     public ResponseEntity<Void> putFornecedor(@PathVariable("id_fornecedor") Long id, @RequestBody Fornecedor fornecedor) {
         fornecedor.setId(id);
 

@@ -15,5 +15,5 @@ import com.gabrielpdev.siso.models.User;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
-
+    public Optional<User> findByUsername(String username);
 }

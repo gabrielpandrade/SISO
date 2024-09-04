@@ -1,7 +1,6 @@
 package com.gabrielpdev.siso.exceptions;
 
-import java.io.IOException;
-
+import com.gabrielpdev.siso.models.ErrorResponse;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
