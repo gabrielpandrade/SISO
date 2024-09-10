@@ -16,7 +16,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class ItemMovimento {
     public static final String TABLE_NAME = "item_movimento";
 

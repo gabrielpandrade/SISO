@@ -15,7 +15,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Fornecedor {
     public static final String TABE_NAME = "fornecedor";
 

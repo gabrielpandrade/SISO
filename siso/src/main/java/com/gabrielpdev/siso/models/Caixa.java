@@ -14,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Caixa {
     public static final String TABLE_NAME = "caixa";
 

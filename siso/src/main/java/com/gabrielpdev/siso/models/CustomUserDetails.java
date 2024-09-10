@@ -69,4 +69,8 @@ public class CustomUserDetails implements UserDetails {
         return enabled;
     }
 
+    public boolean hasRole(String role) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(role));
+    }
 }
+

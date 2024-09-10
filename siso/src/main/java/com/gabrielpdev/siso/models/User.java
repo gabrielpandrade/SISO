@@ -22,7 +22,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class User {
     public static final String TABLE_NAME = "usuario";
 

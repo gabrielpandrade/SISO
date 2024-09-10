@@ -17,7 +17,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class Dentista {
     public static final String TABLE_NAME = "dentista";
 

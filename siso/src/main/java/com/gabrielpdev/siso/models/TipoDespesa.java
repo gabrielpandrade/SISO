@@ -14,7 +14,6 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 public class TipoDespesa {
     public static final String TABLE_NAME = "tipo_despesa";
 
