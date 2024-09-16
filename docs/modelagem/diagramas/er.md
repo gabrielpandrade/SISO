@@ -6,7 +6,8 @@
 erDiagram
     
     %% Relacionamentos
-    
+
+    tipo_usuario }o--|| usuario : e
     usuario ||--o{ caixa : responsavel
     caixa ||--o{ item_movimento : possui
     item_movimento }o--o| dentista : realiza
@@ -15,6 +16,11 @@ erDiagram
     tipo_despesa |o--o{ item_movimento : representa
 
     %% Atributos
+
+    tipo_usuario {
+        long id_usuario PK, FK
+        text tipo
+    }
 
     usuario {
         long id_usuario PK
