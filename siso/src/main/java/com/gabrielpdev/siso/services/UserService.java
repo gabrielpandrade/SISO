@@ -6,9 +6,7 @@ import java.util.Optional;
 import com.gabrielpdev.siso.models.CustomUserDetails;
 import com.gabrielpdev.siso.models.exceptions.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
