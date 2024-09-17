@@ -2,7 +2,19 @@
 
 ## Introdução
 
-Projeto e software desenvolvidos para a matéria de Projeto de Software do curso de Engenharia de Computação UEPG  
+Projeto e software desenvolvidos para a matéria de Projeto de Software do curso de Engenharia de Computação UEPG
+
+## Como Rodar os Códigos
+
+1. Instalar o [java jdk-17+](https://www.oracle.com/java/technologies/downloads/#jdk17-windows)
+2. Abrir a pasta [target](/siso/target)
+3. Executar o comando `java -jar siso-0.0.1-SNAPSHOT.jar`
+
+4. Instalar o [nodeJS 20.17+](https://nodejs.org/pt/download/prebuilt-installer)
+5. Abrir a pasta [siso-gui](/siso-gui)
+6. Executar o comando `npm start`
+
+7. Abrir em um navegador http://localhost:3000
 
 ## Modelagem
 
