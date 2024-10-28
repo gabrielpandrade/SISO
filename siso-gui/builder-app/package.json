@@ -1,0 +1,19 @@
+{
+  "name": "builder-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@builder.io/dev-tools": "^1.0.19",
+    "@builder.io/react": "^5.0.1",
+    "@builder.io/sdk": "^3.0.1",
+    "next": "14.2.7",
+    "react": "^18",
+    "react-dom": "^18"
+  }
+}

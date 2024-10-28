@@ -1,71 +1,36 @@
 package com.gabrielpdev.siso.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Objects;
-
-@Entity
-@Table(name = Dentista.TABLE_NAME)
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@Entity
+@Table(name = "dentista")
 public class Dentista {
-    public static final String TABLE_NAME = "dentista";
 
-
-
-
-    @Column(name = "id_dentista")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_dentista", nullable = false)
     private Long id;
 
-    @Column(name = "nome")
-    @NotBlank
-    @Size(min = 2, max = 50)
+    @NotNull
+    @Column(name = "nome", nullable = false, length = Integer.MAX_VALUE)
     private String nome;
 
-    @Column(name = "CPF")
-    @NotBlank
-    @Size(min = 11, max = 11)
-    private String cpf;
-
-    @Column(name = "CRO")
-    @NotBlank
-    @Size(min = 11, max = 11)
+    @Size(max = 11)
+    @NotNull
+    @Column(name = "\"CRO\"", nullable = false, length = 11)
     private String cro;
 
-    @Column(name = "fone", nullable = false, length = 11)
-    @NotBlank
-    @Size(min = 11, max = 11)
+    @Size(max = 11)
+    @Column(name = "fone", length = 11)
     private String fone;
 
     @Column(name = "percentual_recebido")
-    @NotNull
-    @Positive
-    private Double percentualRecebido;
+    private Float percentualRecebido;
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        Dentista dentista = (Dentista) o;
-        return getId() != null && Objects.equals(getId(), dentista.getId());
-    }
-
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
 }

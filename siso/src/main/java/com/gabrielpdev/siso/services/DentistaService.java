@@ -37,7 +37,6 @@ public class DentistaService {
         Dentista newDentista = findById(dentista.getId());
         newDentista.setNome(dentista.getNome());
         newDentista.setFone(dentista.getFone());
-        newDentista.setCpf(dentista.getCpf());
         newDentista.setCro(dentista.getCro());
         newDentista.setPercentualRecebido(dentista.getPercentualRecebido());
         dentistaRepository.save(newDentista);

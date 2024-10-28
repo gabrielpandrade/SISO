@@ -1,0 +1,61 @@
+/* src/styles/components/Footer.module.css */
+
+.footer {
+    display: flex;
+    gap: 10px; /* Espaço entre os botões */
+    padding: 10px;
+    justify-content: center; /* Centraliza os botões */
+}
+
+.button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.add {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.add:hover {
+    background-color: #0056b3;
+}
+
+.save {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.save:hover {
+    background-color: #1e7e34;
+}
+
+.cancel {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.cancel:hover {
+    background-color: #e0a800;
+}
+
+.close {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.close:hover {
+    background-color: #c82333;
+}
+
+.delete {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+.delete:hover {
+    background-color: #5a6268;
+}

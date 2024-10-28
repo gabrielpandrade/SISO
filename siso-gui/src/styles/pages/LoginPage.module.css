@@ -1,0 +1,198 @@
+/* Corpo da Página */
+body {
+  margin: 0;
+  height: 100vh; /* Ocupa toda a altura da tela */
+  width: 100vw;  /* Ocupa toda a largura da tela */
+  overflow: hidden; /* Remove barras de rolagem */
+  background-color: rgba(2, 1, 129); /* Cor de fundo azul para toda a tela */
+}
+
+/* Página de Login */
+.loginPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; /* Ocupa toda a altura da tela */
+  width: 100vw;  /* Ocupa toda a largura da tela */
+  position: relative; /* Para garantir que os elementos posicionados absolutamente fiquem dentro desta área */
+  overflow: hidden;
+}
+
+/* Imagem de Fundo */
+.backgroundImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem cubra toda a área */
+  object-position: center;
+  z-index: -1; /* Coloca a imagem atrás dos outros elementos */
+}
+
+/* Container do Formulário de Login */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 450px; /* Ajusta o tamanho máximo do formulário */
+  padding: 2rem; /* Adiciona espaçamento ao redor do formulário */
+  box-sizing: border-box;
+  background: rgba(2, 1, 129, 0.8); /* Fundo semi-transparente para destacar o formulário */
+  border-radius: 8px; /* Adiciona bordas arredondadas ao container */
+  z-index: 1; /* Garante que o formulário esteja acima da imagem de fundo */
+}
+
+/* Formulário de Login */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Container do Logo */
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem; /* Adiciona espaço abaixo do logo */
+  color: #fff;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Imagem do Logo */
+.logoImage {
+  width: 120px;
+  height: auto;
+  margin-right: 0.5rem;
+}
+
+/* Texto do Logo */
+.logoText {
+  font: 600 2rem/1 Inter, sans-serif;
+  color: #fff;
+}
+
+/* Label dos Campos */
+.inputLabel {
+  color: #fff;
+  text-align: left;
+  text-transform: uppercase;
+  font: 300 1rem Montserrat, sans-serif;
+  margin-bottom: 0.5rem;
+}
+
+/* Campo de Entrada */
+.inputField {
+  border-radius: 5px;
+  border: 1px solid #fff;
+  padding: 0 1rem;
+  height: 3rem;
+  margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Container da Senha */
+.passwordContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: none; /* Remove qualquer borda */
+  margin-bottom: 1rem;
+  width: 100%;
+  box-sizing: border-box; /* Inclui a borda e o padding na largura e altura total */
+  background: rgba(2, 1, 129, 0); /* Fundo semi-transparente para coincidir com o fundo do formulário */
+}
+
+/* Campo de Entrada da Senha */
+.passwordField {
+  border: none;
+  flex: 1; /* Faz com que o campo de entrada ocupe todo o espaço disponível */
+  height: 3rem; /* Define a altura do campo de entrada */
+  padding: 0 2rem; /* Adiciona espaço extra para o ícone */
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.visibilityIcon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  color: #fff;
+  margin-top: -6px;
+}
+
+/* Botão de Login */
+.loginButton {
+  background-color: rgba(41, 144, 59, 1);
+  color: rgba(2, 1, 129, 1);
+  border: none;
+  border-radius: 5px;
+  padding: 0.75rem 1.5rem;
+  font: 600 1rem Montserrat, sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.3);
+  margin-top: 1.5rem;
+}
+
+/* Mensagem de Erro */
+.error {
+  color: #ff4d4d; /* Ajuste a cor conforme necessário */
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 991px) {
+  .logoText {
+    font-size: 1.5rem;
+  }
+
+  .loginButton {
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .loginForm {
+    margin: 0;
+  }
+
+  .logoImage {
+    width: 100px;
+  }
+
+  .logoText {
+    font-size: 1.25rem;
+  }
+
+  .inputLabel {
+    font-size: 0.875rem;
+  }
+
+  .inputField,
+  .passwordField {
+    height: 2.5rem;
+    font-size: 0.875rem;
+  }
+
+  .visibilityIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .loginButton {
+    padding: 0.75rem 0.5rem;
+  }
+}

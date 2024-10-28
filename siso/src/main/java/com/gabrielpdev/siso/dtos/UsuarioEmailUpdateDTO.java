@@ -10,15 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserCreateDTO {
-    
-    @NotBlank
-    @Size(min = 2, max = 50)
-    private String username;
-
-    @NotBlank
-    @Size(min = 8, max = 50)
-    private String password;
+public class UsuarioEmailUpdateDTO {
 
     @NotBlank
     @Email

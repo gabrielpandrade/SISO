@@ -1,0 +1,81 @@
+.tableContainer {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.searchBar {
+    margin-bottom: 10px;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f4f4f4;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.paginationButton {
+    margin: 0 5px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #fff;
+    color: #333;
+}
+
+.paginationButton:hover {
+    background-color: #f4f4f4;
+}
+
+.activePage {
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+}
+
+.paginationButton:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Estilo para a coluna de edição */
+.editIcon {
+    text-align: center;
+    cursor: pointer;
+}
+
+.icon {
+    color: #007bff;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.icon:hover {
+    color: #0056b3;
+}

@@ -1,0 +1,34 @@
+.submitButton, .voltarButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submitButton {
+    background-color: #0284c7;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+.submitButton:hover {
+    background-color: #026a9b;
+}
+
+.voltarButton {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+}
+
+.voltarButton:hover {
+    background-color: #c9302c;
+}
+
+@media (max-width: 480px) {
+    .submitButton, .voltarButton {
+        font-size: 14px; /* Reduz o tamanho da fonte dos botões */
+        padding: 8px 16px; /* Ajusta o padding dos botões */
+    }
+}

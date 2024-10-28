@@ -1,8 +1,8 @@
 package com.gabrielpdev.siso.services;
 
 import com.gabrielpdev.siso.models.CustomUserDetails;
-import com.gabrielpdev.siso.models.User;
-import com.gabrielpdev.siso.repositories.UserRepository;
+import com.gabrielpdev.siso.models.Usuario;
+import com.gabrielpdev.siso.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,12 +15,12 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UsuarioRepository usuarioRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 
-        Optional<User> user = userRepository.findByUsername(username);
+        Optional<Usuario> user = usuarioRepository.findByLogin(login);
         if (user.isPresent()) {
             return new CustomUserDetails(user.get());
         }

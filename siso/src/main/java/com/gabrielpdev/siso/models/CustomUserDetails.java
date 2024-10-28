@@ -20,14 +20,14 @@ public class CustomUserDetails implements UserDetails {
     private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(User user) {
+    public CustomUserDetails(Usuario user) {
         this.id = user.getId();
-        this.username = user.getUsername();
-        this.password = user.getPassword();
+        this.username = user.getLogin();
+        this.password = user.getSenha();
         this.enabled = user.getAtivo();
         List<GrantedAuthority> auths = new ArrayList<>();
 
-        for (String profile : user.getProfiles()) {
+        for (String profile : user.getPermissoes()) {
             auths.add(new SimpleGrantedAuthority(profile));
         }
 

@@ -3,7 +3,7 @@ package com.gabrielpdev.siso.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gabrielpdev.siso.exceptions.GlobalExceptionHandler;
 import com.gabrielpdev.siso.models.CustomUserDetails;
-import com.gabrielpdev.siso.models.User;
+import com.gabrielpdev.siso.models.Usuario;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,9 +32,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
         try {
-            User userCredentials = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            Usuario userCredentials = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
 
-            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userCredentials.getUsername(), userCredentials.getPassword(), new ArrayList<>());
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userCredentials.getLogin(), userCredentials.getSenha(), new ArrayList<>());
 
             return this.authenticationManager.authenticate(authToken);
         } catch (IOException e) {

@@ -1,0 +1,103 @@
+.dashboard {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+.mainContent {
+    margin-left: 20%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.formWrapper {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.formGroup input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.formGroup input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    outline: none;
+}
+
+.submitButton {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.submitButton:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.submitButton:active {
+    background-color: #004494;
+    transform: translateY(0);
+}
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 0.25rem;
+}
+.contentWrapper {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.tableContainer {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}

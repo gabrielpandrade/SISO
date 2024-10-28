@@ -37,7 +37,6 @@ public class FornecedorService {
         Fornecedor newFornecedor = findById(fornecedor.getId());
         newFornecedor.setNome(fornecedor.getNome());
         newFornecedor.setFone(fornecedor.getFone());
-        newFornecedor.setEndereco(fornecedor.getEndereco());
         fornecedorRepository.save(newFornecedor);
     }
 
