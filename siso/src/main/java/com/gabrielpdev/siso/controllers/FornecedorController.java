@@ -29,7 +29,7 @@ public class FornecedorController {
         return  ResponseEntity.ok().body(fornecedorService.findById(id));
     }
 
-    @PostMapping
+    @PostMapping("/fornecedor")
     public  ResponseEntity<Void> postFornecedor(@Valid @RequestBody Fornecedor fornecedor) {
         fornecedorService.createFornecedor(fornecedor);
 
@@ -38,7 +38,7 @@ public class FornecedorController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id_fornecedor}")
+    @PutMapping("/fornecedor/{id_fornecedor}")
     public ResponseEntity<Void> putFornecedor(@PathVariable("id_fornecedor") Long id, @RequestBody Fornecedor fornecedor) {
         fornecedor.setId(id);
 
@@ -47,7 +47,7 @@ public class FornecedorController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id_fornecedor}")
+    @DeleteMapping("/fornecedor/{id_fornecedor}")
     public ResponseEntity<Void> deleteFornecedorById(@PathVariable("id_fornecedor") Long id) {
         fornecedorService.deleteFornecedorById(id);
 
