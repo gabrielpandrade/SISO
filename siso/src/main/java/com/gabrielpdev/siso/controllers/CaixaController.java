@@ -30,6 +30,7 @@ public class CaixaController {
     @GetMapping("/caixa")
     public ResponseEntity<Caixa> getCaixa(){
         Long id = usuarioService.authenticated().getId();
+        System.out.println(id);
         Optional<Caixa> caixa = caixaService.getCaixaAberto(id);
         caixa.ifPresent(value -> ResponseEntity.ok().body(value));
         return ResponseEntity.ok().body(null);

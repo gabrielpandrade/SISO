@@ -1,5 +1,6 @@
 package com.gabrielpdev.siso.services;
 
+import com.gabrielpdev.siso.dtos.DentistaDTO;
 import com.gabrielpdev.siso.models.Dentista;
 import com.gabrielpdev.siso.models.exceptions.DataBindingViolationException;
 import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
@@ -50,5 +51,14 @@ public class DentistaService {
         } catch (Exception e) {
             throw new DataBindingViolationException("O dentista não pode ser deletado.");
         }
+    }
+
+    public Dentista fromDTO(DentistaDTO dentistaDTO) {
+        Dentista dentista = new Dentista();
+        dentista.setNome(dentistaDTO.getNome());
+        dentista.setFone(dentistaDTO.getFone());
+        dentista.setCro(dentistaDTO.getCro());
+        dentista.setPercentualRecebido(dentistaDTO.getPercentualRecebido());
+        return dentista;
     }
 }

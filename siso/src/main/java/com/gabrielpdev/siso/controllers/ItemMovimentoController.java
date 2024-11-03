@@ -39,4 +39,12 @@ public class ItemMovimentoController {
         itemMovimentoService.updateItemMovimento(itemMovimento);
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/movimento/{id_movimento}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id_movimento){
+        itemMovimentoService.deleteItemMovimentoById(id_movimento);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

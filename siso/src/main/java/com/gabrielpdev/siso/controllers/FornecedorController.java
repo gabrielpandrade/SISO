@@ -13,19 +13,18 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/fornecedor")
 @Validated
 public class FornecedorController {
 
     @Autowired
     private FornecedorService fornecedorService;
 
-    @GetMapping
+    @GetMapping("/fornecedor")
     public ResponseEntity<List<Fornecedor>> getFornecedor() {
         return ResponseEntity.ok().body(fornecedorService.findAll());
     }
 
-    @GetMapping("/{id_fornecedor}")
+    @GetMapping("/fornecedor/{id_fornecedor}")
     public ResponseEntity<Fornecedor> getFornecedorById(@PathVariable("id_fornecedor") Long id) {
         return  ResponseEntity.ok().body(fornecedorService.findById(id));
     }
