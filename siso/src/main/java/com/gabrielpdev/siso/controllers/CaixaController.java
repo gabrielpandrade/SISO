@@ -32,7 +32,8 @@ public class CaixaController {
         Long id = usuarioService.authenticated().getId();
         System.out.println(id);
         Optional<Caixa> caixa = caixaService.getCaixaAberto(id);
-        caixa.ifPresent(value -> ResponseEntity.ok().body(value));
+        System.out.println(caixa);
+        caixa.ifPresent(value -> ResponseEntity.ok().body(caixa));
         return ResponseEntity.ok().body(null);
     }
 
