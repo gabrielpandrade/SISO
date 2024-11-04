@@ -1,13 +1,11 @@
-import api from './api'; // Importe a instância do axios
+import api from './api';
 
-const API_BASE_URL = '/caixa'; // URL base para a API de caixa
-
-// Função para abrir o caixa
-export const openCaixa = async (userId) => {
+export const openCaixa = async () => {
     try {
-        const response = await api.post(`${API_BASE_URL}/${userId}`);
+        const response = await api.post(`/caixa`);
         if (response.status === 201) {
-            return response.data; // Retorna os dados do caixa (incluindo o ID)
+            console.log("caixa aberto" + response);
+            return response.data;
         } else {
             throw new Error('Failed to open caixa');
         }
@@ -17,10 +15,9 @@ export const openCaixa = async (userId) => {
     }
 };
 
-// Função para fechar o caixa
-export const closeCaixa = async (userId) => {
+export const closeCaixa = async () => {
     try {
-        const response = await api.put(`${API_BASE_URL}/${userId}`);
+        const response = await api.put(`/caixa`);
         if (response.status === 204) {
             console.log('caixa fechado');
             return;
@@ -33,27 +30,27 @@ export const closeCaixa = async (userId) => {
     }
 };
 
-// Função para verificar o status do caixa
-export const checkCaixaStatus = async (userId) => {
+export const checkCaixaStatus = async () => {
     try {
-        const response = await api.get(`${API_BASE_URL}/${userId}`);
+        const response = await api.get(`/caixa`);
         if (response.status === 200) {
-            return response.data; // Retorna os dados do caixa, se encontrado
+            console.log(response.data);
+            return response.data;
         } else {
-            return null; // Retorna que o caixa não está aberto
+            return null;
         }
     } catch (error) {
         console.error('Error checking caixa status:', error);
         throw error;
     }
 };
-// Função para obter um movimento específico pelo ID
-export const fetchMovimentoById = async (caixaId, movimentoId) => {
+
+export const fetchMovimentoById = async (movimentoId) => {
     try {
-        const response = await api.get(`${API_BASE_URL}/${caixaId}/movimentos/${movimentoId}`);
+        const response = await api.get(`/movimento/${movimentoId}`);
         if (response.status === 200) {
             console.log(response);
-            return response.data; // Retorna os dados do movimento
+            return response.data;
         } else {
             throw new Error('Failed to fetch movimento');
         }
@@ -63,11 +60,9 @@ export const fetchMovimentoById = async (caixaId, movimentoId) => {
     }
 };
 
-
-// Função para obter os movimentos pelo ID do caixa
-export const fetchMovimentosByCaixaId = async (caixaId) => {
+export const fetchMovimentosByCaixa = async () => {
     try {
-        const response = await api.get(`${API_BASE_URL}/${caixaId}/movimentos`);
+        const response = await api.get(`/caixa/movimentos`);
         if (response.status === 200) {
             return response.data;
         } else {
@@ -79,10 +74,19 @@ export const fetchMovimentosByCaixaId = async (caixaId) => {
     }
 };
 
-// Função para adicionar um movimento
-export const addMovimento = async (caixaId, movimento) => {
+export const addMovimento = async (movimento) => {
     try {
-        const response = await api.post(`${API_BASE_URL}/${caixaId}/movimentos`, movimento);
+        const payload = {
+            operacao: movimento.operacao || '',
+            modalidadePagamento: movimento.modalidadePagamento || '',
+            valor: movimento.valor !== undefined ? movimento.valor : 0,
+            dataHoraMovimento: movimento.dataHoraMovimento,
+            id_tipo_despesa: movimento.id_tipo_despesa || null,
+            id_tipo_receita: movimento.id_tipo_receita||null,
+            id_dentista: movimento.id_dentista||null,
+            id_fornecedor:movimento.id_fornecedor||null,
+        };
+        const response = await api.post(`/movimento`, payload);
         return response.data;
     } catch (error) {
         console.error("Erro ao adicionar movimento:", error.response ? error.response.data : error.message);
@@ -90,10 +94,21 @@ export const addMovimento = async (caixaId, movimento) => {
     }
 };
 
-// Atualizar movimento existente
-export const updateMovimento = async (caixaId, id, movimento) => {
+
+export const updateMovimento = async (id, movimento) => {
     try {
-        const response = await api.put(`${API_BASE_URL}/${caixaId}/movimentos/${id}`, movimento);
+        const payload = {
+            operacao: movimento.operacao || '',
+            modalidadePagamento: movimento.modalidadePagamento || '',
+            valor: movimento.valor !== undefined ? movimento.valor : 0,
+            dataHoraMovimento: movimento.dataHoraMovimento,
+            id_tipo_despesa: movimento.id_tipo_despesa || null,
+            id_tipo_receita: movimento.id_tipo_receita||null,
+            id_dentista: movimento.id_dentista||null,
+            id_fornecedor:movimento.id_fornecedor||null,
+        };
+
+        const response = await api.put(`$/movimento/${id}`, payload);
         return response.data;
     } catch (error) {
         console.error('Erro ao atualizar movimento:', error.response?.data || error.message);
@@ -101,10 +116,9 @@ export const updateMovimento = async (caixaId, id, movimento) => {
     }
 };
 
-// Deletar movimento
-export const deleteMovimento = async (caixaId, id) => {
+export const deleteMovimento = async (id) => {
     try {
-        await api.delete(`${API_BASE_URL}/${caixaId}/movimentos/${id}`);
+        await api.delete(`movimento/${id}`);
     } catch (error) {
         console.error('Erro ao deletar movimento:', error.response?.data || error.message);
         throw error;
@@ -113,7 +127,7 @@ export const deleteMovimento = async (caixaId, id) => {
 
 export const downloadRelatorioCaixas = async () => {
     try {
-        const response = await api.get(`${API_BASE_URL}/caixas`, {
+        const response = await api.get(`/caixas`, {
             responseType: 'blob'
         });
 

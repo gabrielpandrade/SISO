@@ -11,7 +11,7 @@ import {
     addMovimento,
     updateMovimento,
     deleteMovimento,
-    fetchMovimentosByCaixaId,
+    fetchMovimentosByCaixa,
     checkCaixaStatus
 } from '../api/caixa';
 
@@ -73,7 +73,7 @@ function NovoMovimento() {
                 setTipoDespesas(tipoDespesasData);
 
                 if (id) {
-                    const movimentoData = await fetchMovimentosByCaixaId(caixaStatus.id);
+                    const movimentoData = await fetchMovimentosByCaixa(caixaStatus.id);
                     const movimentoToEdit = movimentoData.find(m => m.id === parseInt(id));
                     if (movimentoToEdit) {
                         setMovimento({

@@ -12,13 +12,57 @@ export const getMyInfo = async () => {
     }
 };
 
-export const updateMyInfo = async (user) => {
+export const getUserName = async () => {
+    try {
+        const response = await api.get(`/me`);
+        const usuario = response.data;
+        const login = usuario.login;
+        return login;
+    } catch (error) {
+        console.error("Erro ao verificar nome do usuário:", error);
+        throw error;
+    }
+};
+
+export const isAdmin = async () => {
+    try {
+        const response = await api.get(`/me`);
+        const usuario = response.data;
+
+        return usuario.permissoes && usuario.permissoes.includes("ADMIN");
+    } catch (error) {
+        console.error("Erro ao verificar permissões do usuário:", error);
+        throw error;
+    }
+};
+
+
+export const updateMyInfo = async (email) => {
     try {
         const payload = {
-            descricao: user.descricao || '',
+            email: email || '',
         };
 
         const response = await api.put(`/me`, payload);
+
+        if (response.status !== 200 && response.status !== 204) {
+            throw new Error('Failed to update user');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao atualizar usuario:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
+export const updateMySenha = async (old, newSenha) => {
+    try {
+        const payload = {
+            senha_old: old || '',
+            senha_new: newSenha,
+        };
+
+        const response = await api.put(`/me/senha`, payload);
 
         if (response.status !== 200 && response.status !== 204) {
             throw new Error('Failed to update user');

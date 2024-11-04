@@ -30,7 +30,7 @@ public class DentistaController {
         return  ResponseEntity.ok().body(dentistaService.findById(id));
     }
 
-    @PostMapping("/dentista")
+    @PostMapping("/dentistas")
     public  ResponseEntity<Void> postDentista(@Valid @RequestBody DentistaDTO dentista) {
         Dentista newDentista = dentistaService.fromDTO(dentista);
         dentistaService.createDentista(newDentista);

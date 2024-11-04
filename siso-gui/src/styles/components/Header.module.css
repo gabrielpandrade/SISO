@@ -83,6 +83,17 @@
     align-items: center;
 }
 
+.ProfileButton {
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
 .logoutButton svg {
     margin-right: 8px;
 }

@@ -3,10 +3,9 @@ import { GoChevronDown, GoSignOut } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/components/Header.module.css";
 
-function Header() {
+function Header({username}) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const navigate = useNavigate();
-    const username = localStorage.getItem('username') || 'Perfil';
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -18,24 +17,12 @@ function Header() {
 
     return (
         <div className={styles.headerContainer}>
+            Bem vindo {username}
             <div className={styles.headerContent}>
-                <div className={styles.profileSection}>
-                    <div className={styles.profileIcon}>
-                        <span>👤</span>
-                    </div>
-                    <div className={styles.profileName}>
-                        {username}
-                    </div>
-                    <button className={styles.dropdownButton} onClick={toggleMenu}>
-                        <GoChevronDown className={styles.dropdownIcon} />
-                    </button>
+            <button className={styles.logoutButton} onClick={handleLogout}>
+                Sair <GoSignOut/>
+            </button>
                 </div>
-                <div className={`${styles.logoutMenu} ${isMenuOpen ? styles.show : ""}`}>
-                    <button className={styles.logoutButton} onClick={handleLogout}>
-                        <GoSignOut className={styles.logoutButtonIcon} /> Sair
-                    </button>
-                </div>
-            </div>
         </div>
     );
 }

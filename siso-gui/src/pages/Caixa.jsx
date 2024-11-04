@@ -4,28 +4,23 @@ import styles from "../styles/pages/Caixa.module.css";
 import Dashboard from "../components/Dashboard";
 import Table from "../components/Table";
 import Footer from "../components/Footer";
-import { openCaixa, closeCaixa, fetchMovimentosByCaixaId, checkCaixaStatus } from "../api/caixa";
+import { openCaixa, closeCaixa, fetchMovimentosByCaixa, checkCaixaStatus } from "../api/caixa";
 
 function Caixa() {
     const [movements, setMovements] = useState([]);
-    const [caixaId, setCaixaId] = useState(null);
+    const [caixa, setCaixa] = useState(null);
     const [generalError, setGeneralError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const loadMovements = async () => {
             try {
-                const userId = localStorage.getItem('userId');
-
-                if (userId) {
-                    const data = await checkCaixaStatus(userId);
-                    if (data && data.id) {
-                        setCaixaId(data.id);
-                        const movementsData = await fetchMovimentosByCaixaId(data.id);
-                        setMovements(formatData(movementsData));
-                    }
-                } else {
-                    navigate("/login");
+                const data = await checkCaixaStatus();
+                console.log("aixa", data);
+                if (data) {
+                    setCaixa(data);
+                    const movementsData = await fetchMovimentosByCaixa();
+                    setMovements(formatData(movementsData));
                 }
             } catch (error) {
                 handleBackendError(error);
@@ -50,22 +45,16 @@ function Caixa() {
             fornecedor: item.fornecedor ? item.fornecedor.nome : 'Nenhum',
             dentista: item.dentista ? item.dentista.nome : 'Nenhum',
             valor: item.valor ? item.valor.toFixed(2) : '0.00',
-            dataHora: item.dataHoraMovimento ? new Date(item.dataHoraMovimento).toISOString().slice(0, 16) : 'Data não disponível',
+            dataHora: item.dataHoraMovimento ? item.dataHoraMovimento : 'Data não disponível',
             tipo: item.receita ? item.receita.descricao : (item.despesa ? item.despesa.descricao : 'Nenhum')
         }));
     };
 
     const handleOpenCaixa = async () => {
         try {
-            const userId = localStorage.getItem('userId');
-            if (userId) {
-                const data = await openCaixa(userId);
-                const caixaId = data.id;
-
-                localStorage.setItem('caixaId', caixaId);
-                setCaixaId(caixaId);
-            } else {
-                navigate("/login");
+            const data = await openCaixa();
+            if (data) {
+                setCaixa(data);
             }
         } catch (error) {
             handleBackendError(error);
@@ -74,21 +63,14 @@ function Caixa() {
     };
 
     const handleCloseCaixa = async () => {
-        const userId = localStorage.getItem('userId');
-
-        if (userId) {
             try {
-                await closeCaixa(userId);
-                setCaixaId(null);
+                await closeCaixa();
+                setCaixa(null);
                 setMovements([]);
-                localStorage.removeItem('caixaId');
             } catch (error) {
                 handleBackendError(error);
                 alert('Erro ao fechar o caixa. Tente novamente mais tarde.');
             }
-        } else {
-            alert('Não foi possível fechar o caixa. Verifique se o usuário está autenticado.');
-        }
     };
 
     const handleAddMovement = () => {
@@ -114,7 +96,7 @@ function Caixa() {
         <Dashboard title="Caixa" error={generalError}>
             <div className={styles.formWrapper}>
                 <h1 className={styles.title}>{'Caixa'}</h1>
-                {!caixaId ? (
+                {!caixa ? (
                     <div className={styles.contentWrapper}>
                         <button className={styles.openCaixaButton} onClick={handleOpenCaixa}>
                             Abrir Caixa

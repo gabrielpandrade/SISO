@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import styles from "../styles/pages/LoginPage.module.css";
-import {getMyInfo} from "../api/user";
+import olhoNormal from "../images/olhoNormal.svg";
+
 
 function Login() {
   const navigate = useNavigate();
@@ -19,19 +20,14 @@ function Login() {
         senha
       });
 
-
       console.log(response);
-      const token = response.headers['authorization'];
+      const token = response.headers["authorization"];
       if (token) {
         localStorage.setItem("authToken", token);
-        //const user = await getMyInfo();
-        //localStorage.setItem("userId", user);
-        localStorage.setItem('login', login);
         navigate("/caixa");
       } else {
         setError("Token não encontrado na resposta");
       }
-
     } catch (error) {
       setError("Usuário ou senha incorretos");
     }
@@ -45,7 +41,7 @@ function Login() {
       <main className={styles.loginPage}>
         <img
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/142feee10be7498b5165fd5c0e31375b22670bc2d5534f37af24343589be3b57?placeholderIfAbsent=true&apiKey=3a7bf244ea284dc69a7afb3b5c0a50d1"
+            src= {require("../images/background.svg").default}
             className={styles.backgroundImage}
             alt="Background"
         />
@@ -54,7 +50,7 @@ function Login() {
             <div className={styles.logoContainer}>
               <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/fa365b653601f7eccc3519ad6ba0157f5f31550c4e9fe489acbac53ad6f3f8df?placeholderIfAbsent=true&apiKey=3a7bf244ea284dc69a7afb3b5c0a50d1"
+                  src={require("../images/logo.svg").default}
                   className={styles.logoImage}
                   alt="SISO Logo"
               />
@@ -70,30 +66,40 @@ function Login() {
                 aria-label="Login input"
                 value={login}
                 onChange={(e) => setLogin(e.target.value)}
+                placeholder="Digite seu login"
+                title="Digite seu login"
                 required
             />
             <label htmlFor="senhaInput" className={styles.inputLabel}>
               SENHA
             </label>
-            <div className={styles.senhaContainer}>
+            <div className={styles.passwordContainer}>
               <input
-                  type={showSenha ? "text" : "senha"}
+                  type={showSenha ? "text" : "password"}
                   id="senhaInput"
                   className={styles.inputField}
                   aria-label="Senha input"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
+                  placeholder="Digite sua senha"
+                  title="Digite sua senha"
                   required
               />
               <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/18d16c2035263816b89ea999aabc5578b7454f277bd55f64e03ac70c22602948?placeholderIfAbsent=true&apiKey=3a7bf244ea284dc69a7afb3b5c0a50d1"
+                  src={
+                    showSenha
+                        ? olhoNormal
+                        :require("../images/Olhocortado.svg").default
+                  }
                   className={styles.visibilityIcon}
-                  alt={showSenha ? "Hide senha" : "Show senha"}
+                  alt={showSenha ? "Esconder senha" : "Mostrar senha"}
                   role="button"
                   tabIndex="0"
                   onClick={toggleSenhaVisibility}
-                  aria-label={showSenha ? "Hide senha" : "Show senha"}
+                  onKeyDown={(e) => e.key === "Enter" && toggleSenhaVisibility()}
+                  aria-label={showSenha ? "Esconder senha" : "Mostrar senha"}
+                  title={showSenha ? "Esconder senha" : "Mostrar senha"}
               />
             </div>
             {error && <p className={styles.error} aria-live="assertive">{error}</p>}
