@@ -19,17 +19,17 @@ const Dashboard = ({ children, title, error }) => {
     useEffect(() => {
         const fetchUserName = async () => {
             try {
-                const name = await getUserName(); // Chama a função assíncrona
+                const name = await getUserName();
                 setUsername(name); // Atualiza o estado com o nome de usuário
             } catch (err) {
                 console.error("Erro ao buscar nome de usuário:", err);
             }
         };
 
-        const adminStatus = isAdmin(); // Obtém o status de admin
+        const adminStatus = isAdmin();
         setAdmin(adminStatus);
-        fetchUserName(); // Chama a função para buscar o nome do usuário
-        setError(error); // Atualiza o estado de erro
+        fetchUserName();
+        setError(error);
     }, [error]);
 
     const handleCloseError = () => {
@@ -54,7 +54,7 @@ const Dashboard = ({ children, title, error }) => {
 
     return (
         <div className={styles.dashboard}>
-            <Sidebar showUsers={admin} onHelpClick={handleHelpClick} />
+            <Sidebar showUsers={admin} onHelpClick={handleHelpClick} onProfileClick={handleProfileClick} />
             <div className={styles.mainContent}>
                 <Header username={username} onProfileClick={handleProfileClick} />
                 <div className={styles.contentWrapper}>
