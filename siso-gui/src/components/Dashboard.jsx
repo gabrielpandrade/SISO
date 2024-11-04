@@ -20,14 +20,15 @@ const Dashboard = ({ children, title, error }) => {
         const fetchUserName = async () => {
             try {
                 const name = await getUserName();
-                setUsername(name); // Atualiza o estado com o nome de usuário
+                setUsername(name);
             } catch (err) {
                 console.error("Erro ao buscar nome de usuário:", err);
             }
         };
 
         const adminStatus = isAdmin();
-        setAdmin(adminStatus);
+        console.log("admin", isAdmin())
+        setAdmin(adminStatus.PromiseResult);
         fetchUserName();
         setError(error);
     }, [error]);

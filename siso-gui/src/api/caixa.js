@@ -4,8 +4,7 @@ export const openCaixa = async () => {
     try {
         const response = await api.post(`/caixa`);
         if (response.status === 201) {
-            console.log("caixa aberto" + response);
-            return response.data;
+            return true;
         } else {
             throw new Error('Failed to open caixa');
         }
@@ -34,10 +33,9 @@ export const checkCaixaStatus = async () => {
     try {
         const response = await api.get(`/caixa`);
         if (response.status === 200) {
-            console.log(response.data);
-            return response.data;
+            return true;
         } else {
-            return null;
+            return false;
         }
     } catch (error) {
         console.error('Error checking caixa status:', error);
@@ -78,7 +76,7 @@ export const addMovimento = async (movimento) => {
     try {
         const payload = {
             operacao: movimento.operacao || '',
-            modalidadePagamento: movimento.modalidadePagamento || '',
+            modalidade: movimento.modalidadePagamento || '',
             valor: movimento.valor !== undefined ? movimento.valor : 0,
             dataHoraMovimento: movimento.dataHoraMovimento,
             id_tipo_despesa: movimento.id_tipo_despesa || null,

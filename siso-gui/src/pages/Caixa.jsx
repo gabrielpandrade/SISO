@@ -16,12 +16,9 @@ function Caixa() {
         const loadMovements = async () => {
             try {
                 const data = await checkCaixaStatus();
-                console.log("aixa", data);
-                if (data) {
                     setCaixa(data);
                     const movementsData = await fetchMovimentosByCaixa();
                     setMovements(formatData(movementsData));
-                }
             } catch (error) {
                 handleBackendError(error);
             }
@@ -55,17 +52,17 @@ function Caixa() {
             const data = await openCaixa();
             if (data) {
                 setCaixa(data);
+                console.log("data" + caixa);
             }
         } catch (error) {
             handleBackendError(error);
-            alert('Erro ao abrir o caixa. Tente novamente mais tarde.');
         }
     };
 
     const handleCloseCaixa = async () => {
             try {
                 await closeCaixa();
-                setCaixa(null);
+                setCaixa(false);
                 setMovements([]);
             } catch (error) {
                 handleBackendError(error);
@@ -96,7 +93,7 @@ function Caixa() {
         <Dashboard title="Caixa" error={generalError}>
             <div className={styles.formWrapper}>
                 <h1 className={styles.title}>{'Caixa'}</h1>
-                {!caixa ? (
+                {caixa==false ? (
                     <div className={styles.contentWrapper}>
                         <button className={styles.openCaixaButton} onClick={handleOpenCaixa}>
                             Abrir Caixa
