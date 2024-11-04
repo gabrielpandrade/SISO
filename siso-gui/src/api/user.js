@@ -12,6 +12,31 @@ export const getMyInfo = async () => {
     }
 };
 
+export const getUserName = async () => {
+    try {
+        const response = await api.get(`/me`);
+        const usuario = response.data;
+        const login = usuario.login;
+        return login;
+    } catch (error) {
+        console.error("Erro ao verificar nome do usuário:", error);
+        throw error;
+    }
+};
+
+export const isAdmin = async () => {
+    try {
+        const response = await api.get(`/me`);
+        const usuario = response.data;
+
+        return usuario.permissoes && usuario.permissoes.includes("ADMIN");
+    } catch (error) {
+        console.error("Erro ao verificar permissões do usuário:", error);
+        throw error;
+    }
+};
+
+
 export const updateMyInfo = async (user) => {
     try {
         const payload = {

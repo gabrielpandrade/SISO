@@ -3,8 +3,8 @@ body {
   margin: 0;
   height: 100vh; /* Ocupa toda a altura da tela */
   width: 100vw;  /* Ocupa toda a largura da tela */
-  overflow: hidden; /* Remove barras de rolagem */
-  background-color: rgba(2, 1, 129); /* Cor de fundo azul para toda a tela */
+  overflow: hidden;
+  background-color: rgba(123, 176, 218, 0.84);
 }
 
 /* Página de Login */
@@ -43,38 +43,33 @@ body {
   z-index: 1; /* Garante que o formulário esteja acima da imagem de fundo */
 }
 
-/* Formulário de Login */
 .loginForm {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-/* Container do Logo */
 .logoContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem; /* Adiciona espaço abaixo do logo */
+  margin-bottom: 2rem;
   color: #fff;
   text-align: center;
   text-transform: uppercase;
 }
 
-/* Imagem do Logo */
 .logoImage {
   width: 120px;
   height: auto;
   margin-right: 0.5rem;
 }
 
-/* Texto do Logo */
 .logoText {
   font: 600 2rem/1 Inter, sans-serif;
   color: #fff;
 }
 
-/* Label dos Campos */
 .inputLabel {
   color: #fff;
   text-align: left;
@@ -83,7 +78,6 @@ body {
   margin-bottom: 0.5rem;
 }
 
-/* Campo de Entrada */
 .inputField {
   border-radius: 5px;
   border: 1px solid #fff;
@@ -94,7 +88,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Container da Senha */
 .passwordContainer {
   position: relative;
   display: flex;
@@ -106,7 +99,6 @@ body {
   background: rgba(2, 1, 129, 0); /* Fundo semi-transparente para coincidir com o fundo do formulário */
 }
 
-/* Campo de Entrada da Senha */
 .passwordField {
   border: none;
   flex: 1; /* Faz com que o campo de entrada ocupe todo o espaço disponível */

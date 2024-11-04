@@ -9,15 +9,21 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 8px;
+    justify-content: flex-start; /* Muda para flex-start para empurrar o conteúdo para o topo */
+}
+
+.sidebarBackground {
     padding: 20px;
-    justify-content: space-between; /* Para garantir que o conteúdo fique no topo e o botão de ajuda no fim */
+    text-align: center;
 }
 
 .menuList {
     display: flex;
     flex-direction: column;
     width: 100%;
-    flex-grow: 1; /* Para permitir que a lista ocupe o espaço entre topo e ajuda */
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 .menuItem {
@@ -25,6 +31,9 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    background-color: #020181;
+    border: none;
+    cursor: pointer;
     color: #fff;
     text-decoration: none;
     font-size: 16px;
@@ -40,38 +49,15 @@
 }
 
 .menuIcon {
-    width: 30px;
+    width: 32px;
     margin-right: 10px;
 }
 
 .profileImage {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin-bottom: 20px;
+    width: 160px;
+    height: 160px;
+    padding-right: 20px;
 }
-
-.helpButton {
-    margin-top: auto; /* Empurra o botão de ajuda para o final */
-    width: 100%;
-    padding: 15px 0;
-    background-color: rgba(79, 79, 156, 0.84);
-    color: #fff;
-    text-align: center;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border: none;
-}
-
-.helpButton:hover {
-    background-color: rgba(100, 100, 200, 0.9);
-}
-
-.helpButton:focus {
-    outline: none;
-}
-
 @media (max-width: 768px) {
     .sidebar {
         width: 60px;
@@ -86,8 +72,4 @@
         margin-right: 0;
     }
 
-    .helpButton {
-        font-size: 12px;
-        padding: 10px 0;
-    }
 }
