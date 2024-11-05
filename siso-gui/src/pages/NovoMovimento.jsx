@@ -43,6 +43,16 @@ function NovoMovimento() {
     const [tipoDespesas, setTipoDespesas] = useState([]);
     const [caixa, setCaixa] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [generalError, setGeneralError] = useState(null);
+
+    const handleBackendError = (error) => {
+        if (error.response && error.response.data) {
+            setGeneralError('Erro ao carregar dados: ' + (error.response.data.message || 'Erro desconhecido'));
+        } else {
+            setGeneralError('Erro de conexão ou problema desconhecido ao carregar dados.');
+        }
+        console.error('Erro ao buscar dados:', error);
+    };
 
     useEffect(() => {
         const loadData = async () => {
@@ -176,7 +186,7 @@ function NovoMovimento() {
     }
 
     return (
-        <Dashboard>
+        <Dashboard error={generalError}>
             <div className={styles.formWrapper}>
                 <h1 className={styles.title}>{isEditing ? 'Editar Movimento' : 'Adicionar Novo Movimento'}</h1>
                 <form className={styles.form}>

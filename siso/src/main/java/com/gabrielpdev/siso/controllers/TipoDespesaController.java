@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/despesa")
+@RequestMapping("/despesa")
 @Validated
 public class TipoDespesaController {
 
