@@ -8,13 +8,14 @@ import HelpModal from "./HelpModal";
 import { useLocation } from "react-router-dom";
 import ProfileModal from "./ProfileModal";
 
-const Dashboard = ({ children, title, error }) => {
+const Dashboard = ({ children, error }) => {
     const [erro, setError] = useState(error);
     const [admin, setAdmin] = useState(false);
     const location = useLocation();
     const [isHelpOpen, setIsHelpOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [username, setUsername] = useState("");
+    const [modais, setModais] = useState([]);
 
     useEffect(() => {
         const fetchUserName = async () => {
@@ -47,10 +48,12 @@ const Dashboard = ({ children, title, error }) => {
 
     const handleProfileClick = () => {
         setIsProfileOpen(true);
+        setModais(["perfil"]);
     };
 
     const handleCloseProfile = () => {
         setIsProfileOpen(false);
+        setModais([]);
     };
 
     return (
@@ -64,7 +67,7 @@ const Dashboard = ({ children, title, error }) => {
             </div>
             <ProfileModal isOpen={isProfileOpen} onClose={handleCloseProfile} />
             <ErrorPopup message={erro} onClose={handleCloseError} />
-            <HelpModal isOpen={isHelpOpen} onClose={handleCloseHelp} currentScreen={location.pathname} />
+            <HelpModal isOpen={isHelpOpen} onClose={handleCloseHelp} currentScreen={location.pathname} modais={modais} mensagem={erro}/>
         </div>
     );
 };

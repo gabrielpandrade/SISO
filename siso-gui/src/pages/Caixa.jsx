@@ -8,23 +8,27 @@ import { openCaixa, closeCaixa, fetchMovimentosByCaixa, checkCaixaStatus } from 
 
 function Caixa() {
     const [movements, setMovements] = useState([]);
-    const [caixa, setCaixa] = useState(null);
+    const [caixaAberto, setCaixaAberto] = useState(false);
     const [generalError, setGeneralError] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const loadMovements = async () => {
+        const loadCaixaStatus = async () => {
             try {
-                const data = await checkCaixaStatus();
-                    setCaixa(data);
+                const status = await checkCaixaStatus();
+                setCaixaAberto(status);
+                if (status) {
                     const movementsData = await fetchMovimentosByCaixa();
                     setMovements(formatData(movementsData));
+                } else {
+                    setMovements([]);
+                }
             } catch (error) {
                 handleBackendError(error);
             }
         };
 
-        loadMovements();
+        loadCaixaStatus();
     }, [navigate]);
 
     const handleBackendError = (error) => {
@@ -51,8 +55,8 @@ function Caixa() {
         try {
             const data = await openCaixa();
             if (data) {
-                setCaixa(data);
-                console.log("data" + caixa);
+                const status = await checkCaixaStatus()
+                setCaixaAberto(status);
             }
         } catch (error) {
             handleBackendError(error);
@@ -60,14 +64,19 @@ function Caixa() {
     };
 
     const handleCloseCaixa = async () => {
-            try {
+        try {
+            const status = await checkCaixaStatus()
+            if (status) {
                 await closeCaixa();
-                setCaixa(false);
+                setCaixaAberto(false);
                 setMovements([]);
-            } catch (error) {
-                handleBackendError(error);
-                alert('Erro ao fechar o caixa. Tente novamente mais tarde.');
+            } else {
+                setCaixaAberto(false);
+                setMovements([]);
             }
+        } catch (error) {
+            handleBackendError(error);
+        }
     };
 
     const handleAddMovement = () => {
@@ -93,7 +102,7 @@ function Caixa() {
         <Dashboard title="Caixa" error={generalError}>
             <div className={styles.formWrapper}>
                 <h1 className={styles.title}>{'Caixa'}</h1>
-                {caixa==false ? (
+                {!caixaAberto ? (
                     <div className={styles.contentWrapper}>
                         <button className={styles.openCaixaButton} onClick={handleOpenCaixa}>
                             Abrir Caixa
@@ -101,7 +110,7 @@ function Caixa() {
                     </div>
                 ) : (
                     <>
-                            <Table data={movements} columns={columns} />
+                        <Table data={movements} columns={columns} />
                         <div className={styles.footerWrapper}>
                             <Footer buttons={footerButtons} />
                         </div>

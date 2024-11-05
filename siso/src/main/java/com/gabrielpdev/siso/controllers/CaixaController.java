@@ -32,7 +32,7 @@ public class CaixaController {
         Long id = usuarioService.authenticated().getId();
         System.out.println(id);
         Optional<Caixa> caixa = caixaService.getCaixaAberto(id);
-        return caixa.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.ok().body(null));
+        return caixa.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @PostMapping("/caixa")

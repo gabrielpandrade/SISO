@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../styles/components/HelpModal.module.css";
 
-function HelpModal({ isOpen, onClose, currentScreen }) {
+function HelpModal({ isOpen, onClose, currentScreen, modais, mensagem}) {
     if (!isOpen) return null;
 
     const getHelpContent = () => {

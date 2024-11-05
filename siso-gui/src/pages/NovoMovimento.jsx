@@ -100,11 +100,6 @@ function NovoMovimento() {
 
     const handleSave = async () => {
         try {
-            if (!caixaId) {
-                console.error('Caixa não encontrado');
-                return;
-            }
-
             if (!validateFields()) {
                 return;
             }
@@ -135,11 +130,7 @@ function NovoMovimento() {
 
     const handleDelete = async () => {
         try {
-            if (!caixaId) {
-                console.error('Caixa não encontrado');
-                return;
-            }
-            await deleteMovimento(caixaId, id);
+            await deleteMovimento(id);
             navigate('/caixa');
         } catch (error) {
             console.error('Erro ao excluir movimento:', error);

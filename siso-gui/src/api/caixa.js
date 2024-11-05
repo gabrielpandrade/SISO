@@ -32,16 +32,20 @@ export const closeCaixa = async () => {
 export const checkCaixaStatus = async () => {
     try {
         const response = await api.get(`/caixa`);
+        console.log("response:", response);
         if (response.status === 200) {
             return true;
-        } else {
+        }else{
             return false;
         }
     } catch (error) {
-        console.error('Error checking caixa status:', error);
+        console.error('Erro ao verificar status do caixa:', error);
         throw error;
     }
 };
+
+
+
 
 export const fetchMovimentoById = async (movimentoId) => {
     try {
