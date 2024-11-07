@@ -2,10 +2,8 @@ package com.gabrielpdev.siso.controllers;
 
 import com.gabrielpdev.siso.models.Caixa;
 import com.gabrielpdev.siso.models.ItemMovimento;
-import com.gabrielpdev.siso.models.exceptions.DataBindingViolationException;
 import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
 import com.gabrielpdev.siso.services.CaixaService;
-import com.gabrielpdev.siso.services.ItemMovimentoService;
 import com.gabrielpdev.siso.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,7 +36,7 @@ public class CaixaController {
     public ResponseEntity<Caixa> postCaixa(){
         Long id = usuarioService.authenticated().getId();
         caixaService.abrirCaixa(id);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/admin/caixa/{id_usuario}").buildAndExpand(id).toUri();
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id_usuario}").buildAndExpand(id).toUri();
         return ResponseEntity.created(uri).build();
     }
 

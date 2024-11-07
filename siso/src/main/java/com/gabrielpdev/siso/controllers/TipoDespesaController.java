@@ -1,7 +1,9 @@
 package com.gabrielpdev.siso.controllers;
 
+import com.gabrielpdev.siso.dtos.TipoDespesaDTO;
 import com.gabrielpdev.siso.models.TipoDespesa;
 import com.gabrielpdev.siso.services.TipoDespesaService;
+import com.gabrielpdev.siso.services.TipoReceitaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,25 +15,25 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/despesa")
 @Validated
 public class TipoDespesaController {
 
     @Autowired
     private TipoDespesaService tipoDespesaService;
 
-    @GetMapping
+    @GetMapping("/despesa")
     public ResponseEntity<List<TipoDespesa>> getTipoDespesa() {
         return ResponseEntity.ok().body(tipoDespesaService.findAll());
     }
 
-    @GetMapping("/{id_tipo_despesa}")
+    @GetMapping("/despesa/{id_tipo_despesa}")
     public ResponseEntity<TipoDespesa> getTipoDespesaById(@PathVariable("id_tipo_despesa") Long id) {
         return  ResponseEntity.ok().body(tipoDespesaService.findById(id));
     }
 
-    @PostMapping
-    public  ResponseEntity<Void> postTipoDespesa(@Valid @RequestBody TipoDespesa tipoDespesa) {
+    @PostMapping("/despesa")
+    public  ResponseEntity<Void> postTipoDespesa(@Valid @RequestBody TipoDespesaDTO tipoDespesaDTO) {
+        TipoDespesa tipoDespesa = tipoDespesaService.fromDTO(tipoDespesaDTO);
         tipoDespesaService.createTipoDespesa(tipoDespesa);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id_tipo_despesa").buildAndExpand(tipoDespesa.getId()).toUri();
@@ -39,8 +41,9 @@ public class TipoDespesaController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id_tipo_despesa}")
-    public ResponseEntity<Void> putTipoDespesa(@PathVariable("id_tipo_despesa") Long id, @RequestBody TipoDespesa tipoDespesa) {
+    @PutMapping("/despesa/{id_tipo_despesa}")
+    public ResponseEntity<Void> putTipoDespesa(@PathVariable("id_tipo_despesa") Long id, @RequestBody TipoDespesaDTO tipoDespesaDTO) {
+        TipoDespesa tipoDespesa = tipoDespesaService.fromDTO(tipoDespesaDTO);
         tipoDespesa.setId(id);
 
         tipoDespesaService.updateTipoDespesa(tipoDespesa);
@@ -48,7 +51,7 @@ public class TipoDespesaController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id_tipo_despesa}")
+    @DeleteMapping("/despesa/{id_tipo_despesa}")
     public ResponseEntity<Void> deleteTipoDespesaById(@PathVariable("id_tipo_despesa") Long id) {
         tipoDespesaService.deleteTipoDespesaById(id);
 

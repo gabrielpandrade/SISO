@@ -1,5 +1,6 @@
 package com.gabrielpdev.siso.controllers;
 
+import com.gabrielpdev.siso.dtos.FornecedorDTO;
 import com.gabrielpdev.siso.models.Fornecedor;
 import com.gabrielpdev.siso.services.FornecedorService;
 import jakarta.validation.Valid;
@@ -30,7 +31,8 @@ public class FornecedorController {
     }
 
     @PostMapping("/fornecedor")
-    public  ResponseEntity<Void> postFornecedor(@Valid @RequestBody Fornecedor fornecedor) {
+    public  ResponseEntity<Void> postFornecedor(@Valid @RequestBody FornecedorDTO fornecedorDTO) {
+        Fornecedor fornecedor = fornecedorService.fromDTO(fornecedorDTO);
         fornecedorService.createFornecedor(fornecedor);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id_fornecedor").buildAndExpand(fornecedor.getId()).toUri();
@@ -39,7 +41,8 @@ public class FornecedorController {
     }
 
     @PutMapping("/fornecedor/{id_fornecedor}")
-    public ResponseEntity<Void> putFornecedor(@PathVariable("id_fornecedor") Long id, @RequestBody Fornecedor fornecedor) {
+    public ResponseEntity<Void> putFornecedor(@PathVariable("id_fornecedor") Long id, @RequestBody FornecedorDTO fornecedorDTO) {
+        Fornecedor fornecedor = fornecedorService.fromDTO(fornecedorDTO);
         fornecedor.setId(id);
 
         fornecedorService.updateFornecedor(fornecedor);

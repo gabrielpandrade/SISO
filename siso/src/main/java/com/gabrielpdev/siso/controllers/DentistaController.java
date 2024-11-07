@@ -41,7 +41,8 @@ public class DentistaController {
     }
 
     @PutMapping("/dentista/{id_dentista}")
-    public ResponseEntity<Void> putDentista(@PathVariable("id_dentista") Long id, @RequestBody Dentista dentista) {
+    public ResponseEntity<Void> putDentista(@PathVariable("id_dentista") Long id, @RequestBody DentistaDTO dentistaDTO) {
+        Dentista dentista = dentistaService.fromDTO(dentistaDTO);
         dentista.setId(id);
 
         dentistaService.updateDentista(dentista);
