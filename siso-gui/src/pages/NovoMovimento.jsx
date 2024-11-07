@@ -41,17 +41,25 @@ function NovoMovimento() {
     const [fornecedores, setFornecedores] = useState([]);
     const [tipoReceitas, setTipoReceitas] = useState([]);
     const [tipoDespesas, setTipoDespesas] = useState([]);
-    const [caixaId, setCaixaId] = useState(null);
+    const [caixa, setCaixa] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const [generalError, setGeneralError] = useState(null);
+
+    const handleBackendError = (error) => {
+        if (error.response && error.response.data) {
+            setGeneralError('Erro ao carregar dados: ' + (error.response.data.message || 'Erro desconhecido'));
+        } else {
+            setGeneralError('Erro de conexão ou problema desconhecido ao carregar dados.');
+        }
+        console.error('Erro ao buscar dados:', error);
+    };
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const userId = localStorage.getItem('userId');
-                const caixaStatus = await checkCaixaStatus(userId);
-
-                if (caixaStatus && caixaStatus.id) {
-                    setCaixaId(caixaStatus.id);
+                const caixaStatus = await checkCaixaStatus();
+                if (caixaStatus) {
+                    setCaixa(true);
                 } else {
                     console.error('Caixa não encontrado ou está fechado');
                     navigate('/caixa');
@@ -73,12 +81,12 @@ function NovoMovimento() {
                 setTipoDespesas(tipoDespesasData);
 
                 if (id) {
-                    const movimentoData = await fetchMovimentosByCaixa(caixaStatus.id);
+                    const movimentoData = await fetchMovimentosByCaixa();
                     const movimentoToEdit = movimentoData.find(m => m.id === parseInt(id));
                     if (movimentoToEdit) {
                         setMovimento({
                             ...movimentoToEdit,
-                            dataHora: new Date(movimentoToEdit.dataHora).toISOString().slice(0, 16),
+                            dataHora: new Date(movimentoToEdit.dataHora),
                             modalidade: movimentoToEdit.operacao === 'Sangria' || movimentoToEdit.operacao === 'Aporte' ? 'Dinheiro' : movimentoToEdit.modalidade
                         });
                         setIsEditing(true);
@@ -102,30 +110,25 @@ function NovoMovimento() {
 
     const handleSave = async () => {
         try {
-            if (!caixaId) {
-                console.error('Caixa não encontrado');
-                return;
-            }
-
             if (!validateFields()) {
                 return;
             }
 
             const movimentoData = {
-                operacao: movimento.operacao.toUpperCase(),
-                modalidade: movimento.modalidade.toUpperCase(),
-                valor: parseFloat(movimento.valor.replace(',', '.')), // Converte o valor para float
-                dataHoraMovimento: adjustedDate, // Conversão para ISO 8601
-                receitaId: movimento.tipoReceita ? parseInt(movimento.tipoReceita) : null,
-                despesaId: movimento.tipoDespesa ? parseInt(movimento.tipoDespesa) : null,
-                dentistaId: movimento.dentista ? parseInt(movimento.dentista) : null,
-                fornecedorId: movimento.fornecedor && movimento.fornecedor !== 'Nenhum' ? parseInt(movimento.fornecedor) : null
+                operacao: movimento.operacao,
+                modalidade: movimento.modalidade,
+                valor: parseFloat(movimento.valor.replace(',', '.')),
+                dataHoraMovimento: adjustedDate,
+                id_tipo_receita: movimento.tipoReceita ? parseInt(movimento.tipoReceita) : null,
+                id_tipo_despesa: movimento.tipoDespesa ? parseInt(movimento.tipoDespesa) : null,
+                id_dentista: movimento.dentista ? parseInt(movimento.dentista) : null,
+                id_fornecedor: movimento.fornecedor && movimento.fornecedor !== 'Nenhum' ? parseInt(movimento.fornecedor) : null
             };
 
             if (isEditing) {
-                await updateMovimento(caixaId, id, movimentoData);
+                await updateMovimento(id, movimentoData);
             } else {
-                await addMovimento(caixaId, movimentoData);
+                await addMovimento(movimentoData);
             }
 
             navigate('/caixa');
@@ -137,11 +140,7 @@ function NovoMovimento() {
 
     const handleDelete = async () => {
         try {
-            if (!caixaId) {
-                console.error('Caixa não encontrado');
-                return;
-            }
-            await deleteMovimento(caixaId, id);
+            await deleteMovimento(id);
             navigate('/caixa');
         } catch (error) {
             console.error('Erro ao excluir movimento:', error);
@@ -187,7 +186,7 @@ function NovoMovimento() {
     }
 
     return (
-        <Dashboard>
+        <Dashboard error={generalError}>
             <div className={styles.formWrapper}>
                 <h1 className={styles.title}>{isEditing ? 'Editar Movimento' : 'Adicionar Novo Movimento'}</h1>
                 <form className={styles.form}>

@@ -29,7 +29,7 @@ export const isAdmin = async () => {
         const response = await api.get(`/me`);
         const usuario = response.data;
 
-        return usuario.permissoes && usuario.permissoes.includes("ADMIN");
+        return usuario.permissoes.includes("ADMIN");
     } catch (error) {
         console.error("Erro ao verificar permissões do usuário:", error);
         throw error;
