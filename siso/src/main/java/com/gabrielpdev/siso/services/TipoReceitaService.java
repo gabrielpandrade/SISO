@@ -1,5 +1,6 @@
 package com.gabrielpdev.siso.services;
 
+import com.gabrielpdev.siso.dtos.TipoReceitaDTO;
 import com.gabrielpdev.siso.models.TipoReceita;
 import com.gabrielpdev.siso.models.exceptions.DataBindingViolationException;
 import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.util.StringUtils.capitalize;
 
 @Service
 public class TipoReceitaService {
@@ -47,5 +50,11 @@ public class TipoReceitaService {
         } catch (Exception e) {
             throw new DataBindingViolationException(" O tipo de receita não pode ser deletado.");
         }
+    }
+
+    public TipoReceita fromDTO(TipoReceitaDTO tipoReceitaDTO) {
+        TipoReceita tipoReceita = new TipoReceita();
+        tipoReceita.setDescricao(capitalize(tipoReceitaDTO.getDescricao()));
+        return tipoReceita;
     }
 }

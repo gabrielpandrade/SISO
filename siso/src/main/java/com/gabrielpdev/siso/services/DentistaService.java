@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static io.jsonwebtoken.lang.Strings.capitalize;
+
 @Service
 public class DentistaService {
 
@@ -55,7 +57,7 @@ public class DentistaService {
 
     public Dentista fromDTO(DentistaDTO dentistaDTO) {
         Dentista dentista = new Dentista();
-        dentista.setNome(dentistaDTO.getNome());
+        dentista.setNome(capitalize(dentistaDTO.getNome()));
         dentista.setFone(dentistaDTO.getFone());
         dentista.setCro(dentistaDTO.getCro());
         dentista.setPercentualRecebido(dentistaDTO.getPercentualRecebido());

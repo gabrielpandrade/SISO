@@ -1,5 +1,6 @@
 package com.gabrielpdev.siso.services;
 
+import com.gabrielpdev.siso.dtos.FornecedorDTO;
 import com.gabrielpdev.siso.models.Fornecedor;
 import com.gabrielpdev.siso.models.exceptions.DataBindingViolationException;
 import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 @Service
 public class FornecedorService {
@@ -48,5 +51,14 @@ public class FornecedorService {
         } catch (Exception e) {
             throw new DataBindingViolationException("O fornecedor não pode ser deletado.");
         }
+    }
+
+    public Fornecedor fromDTO(FornecedorDTO fornecedorDTO) {
+        Fornecedor fornecedor = new Fornecedor();
+
+        fornecedor.setNome(capitalize(fornecedorDTO.getNome()));
+        fornecedor.setFone(fornecedorDTO.getFone());
+
+        return fornecedor;
     }
 }

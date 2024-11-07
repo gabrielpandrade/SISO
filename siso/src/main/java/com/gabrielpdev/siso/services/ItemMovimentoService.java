@@ -3,7 +3,6 @@ package com.gabrielpdev.siso.services;
 import com.gabrielpdev.siso.dtos.ItemMovimentoDTO;
 import com.gabrielpdev.siso.dtos.ItemMovimentoUpdateDTO;
 import com.gabrielpdev.siso.models.ItemMovimento;
-import com.gabrielpdev.siso.models.TipoDespesa;
 import com.gabrielpdev.siso.models.exceptions.DataBindingViolationException;
 import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
 import com.gabrielpdev.siso.repositories.ItemMovimentoRepository;
@@ -14,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static org.apache.tomcat.util.IntrospectionUtils.capitalize;
 
 @Service
 public class ItemMovimentoService {
@@ -77,8 +78,8 @@ public class ItemMovimentoService {
 
     public ItemMovimento fromDTO(ItemMovimentoDTO itemMovimentoDTO) {
         ItemMovimento itemMovimento = new ItemMovimento();
-        itemMovimento.setOperacao(itemMovimentoDTO.getOperacao());
-        itemMovimento.setModalidadePagamento(itemMovimentoDTO.getModalidadePagamento());
+        itemMovimento.setOperacao(capitalize(itemMovimentoDTO.getOperacao()));
+        itemMovimento.setModalidadePagamento(capitalize(itemMovimentoDTO.getModalidadePagamento()));
         itemMovimento.setValor(itemMovimentoDTO.getValor());
         itemMovimento.setDataHoraMovimento(itemMovimentoDTO.getDataHoraMovimento());
         itemMovimento.setCaixa(caixaService.getCaixaById(itemMovimentoDTO.getId_caixa()));
@@ -99,8 +100,8 @@ public class ItemMovimentoService {
 
     public ItemMovimento fromDTO(ItemMovimentoUpdateDTO itemMovimentoDTO) {
         ItemMovimento itemMovimento = new ItemMovimento();
-        itemMovimento.setOperacao(itemMovimentoDTO.getOperacao());
-        itemMovimento.setModalidadePagamento(itemMovimentoDTO.getModalidadePagamento());
+        itemMovimento.setOperacao(capitalize(itemMovimentoDTO.getOperacao()));
+        itemMovimento.setModalidadePagamento(capitalize(itemMovimentoDTO.getModalidadePagamento()));
         itemMovimento.setValor(itemMovimentoDTO.getValor());
         itemMovimento.setDataHoraMovimento(itemMovimentoDTO.getDataHoraMovimento());
         if(Objects.nonNull(itemMovimentoDTO.getId_tipo_despesa())) {

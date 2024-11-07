@@ -1,5 +1,6 @@
 package com.gabrielpdev.siso.services;
 
+import com.gabrielpdev.siso.dtos.TipoDespesaDTO;
 import com.gabrielpdev.siso.models.TipoDespesa;
 import com.gabrielpdev.siso.models.exceptions.DataBindingViolationException;
 import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static io.jsonwebtoken.lang.Strings.capitalize;
 
 @Service
 public class TipoDespesaService {
@@ -47,5 +50,11 @@ public class TipoDespesaService {
         } catch (Exception e) {
             throw new DataBindingViolationException("O tipo de despesa não pode ser deletado.");
         }
+    }
+
+    public TipoDespesa fromDTO(TipoDespesaDTO tipoDespesaDTO) {
+        TipoDespesa tipoDespesa = new TipoDespesa();
+        tipoDespesa.setDescricao(capitalize(tipoDespesaDTO.getDescricao()));
+        return tipoDespesa;
     }
 }
