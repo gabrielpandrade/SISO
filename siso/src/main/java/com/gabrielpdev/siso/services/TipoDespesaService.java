@@ -21,7 +21,7 @@ public class TipoDespesaService {
     private TipoDespesaRepository tipoDespesaRepository;
 
     public List<TipoDespesa> findAll(){
-        return tipoDespesaRepository.findAll();
+        return tipoDespesaRepository.findAllByOrderByDescricao();
     }
 
     public TipoDespesa findById(Long id){

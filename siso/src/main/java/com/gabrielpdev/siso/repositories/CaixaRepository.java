@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface CaixaRepository extends JpaRepository<Caixa, Long> {
     Optional<Caixa> findCaixaByUsuarioAndDataHoraFechamentoIsNull(Usuario usuario);
 
-    List<Caixa> findCaixaByUsuario_Id(Long id);
+    List<Caixa> findCaixaByUsuario_IdOrderByDataHoraAbertura(Long id);
 }

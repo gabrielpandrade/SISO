@@ -29,7 +29,7 @@ public class CaixaService {
     }
 
     public List<Caixa> getCaixasByUsuario(Long id_usuario) {
-        return caixaRepository.findCaixaByUsuario_Id(id_usuario);
+        return caixaRepository.findCaixaByUsuario_IdOrderByDataHoraAbertura(id_usuario);
     }
 
     public Optional<Caixa> getCaixaAberto(Long id_usuario) {

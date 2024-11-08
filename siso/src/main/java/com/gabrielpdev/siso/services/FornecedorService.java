@@ -21,7 +21,7 @@ public class FornecedorService {
     private FornecedorRepository fornecedorRepository;
 
     public List<Fornecedor> findAll() {
-        return fornecedorRepository.findAll();
+        return fornecedorRepository.findAllByOrderByNome();
     }
 
     public Fornecedor findById(Long id) {

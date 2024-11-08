@@ -21,7 +21,7 @@ public class DentistaService {
     private DentistaRepository dentistaRepository;
 
     public List<Dentista> findAll() {
-        return dentistaRepository.findAll();
+        return dentistaRepository.findAllByOrderByNome();
     }
 
     public Dentista findById(Long id) {
