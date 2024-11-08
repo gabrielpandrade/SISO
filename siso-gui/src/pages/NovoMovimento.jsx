@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import InputMask from 'react-input-mask';
 import { useParams, useNavigate } from 'react-router-dom';
 import Dashboard from '../components/Dashboard';
 import Footer from '../components/Footer';
@@ -18,10 +19,12 @@ import {
 function NovoMovimento() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const [errors, setErrors] = useState({});
+
 
     const [movimento, setMovimento] = useState({
         operacao: null,
-        modalidade: null,
+        modalidade: "Dinheiro",
         valor: null,
         descricao: null,
         taxa: 5,
@@ -73,11 +76,16 @@ function NovoMovimento() {
                 setTipoReceitas(tipoReceitasData);
                 setTipoDespesas(tipoDespesasData);
 
+                // Carregar movimento para edição, se necessário
                 if (id) {
                     const movimentoToEdit = await fetchMovimentoById(id);
                     if (movimentoToEdit) {
                         setMovimento({
                             ...movimentoToEdit,
+                            dentista: movimentoToEdit.dentista ? movimentoToEdit.dentista.id : null, // Ajuste aqui
+                            fornecedor: movimentoToEdit.fornecedor ? movimentoToEdit.fornecedor.id : null, // Ajuste aqui
+                            tipoReceita: movimentoToEdit.tipoReceita ? movimentoToEdit.tipoReceita.id : null, // Ajuste aqui
+                            tipoDespesa: movimentoToEdit.tipoDespesa ? movimentoToEdit.tipoDespesa.id : null, // Ajuste aqui
                             dataHora: movimentoToEdit.dataHora,
                             modalidade: movimentoToEdit.operacao === 'Sangria' || movimentoToEdit.operacao === 'Aporte' ? 'Dinheiro' : movimentoToEdit.modalidade
                         });
@@ -95,10 +103,13 @@ function NovoMovimento() {
         loadData();
     }, [id, navigate]);
 
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setMovimento((prev) => ({ ...prev, [name]: value }));
+        setErrors((prev) => ({ ...prev, [name]: '' })); // Limpa o erro do campo alterado
     };
+
 
     const handleSave = async () => {
         try {
@@ -109,7 +120,7 @@ function NovoMovimento() {
             const movimentoData = {
                 operacao: movimento.operacao,
                 modalidade: movimento.modalidade,
-                valor: parseFloat(movimento.valor),
+                valor: sanitizeValor(movimento.valor),
                 id_tipo_receita: movimento.tipoReceita ? parseInt(movimento.tipoReceita) : null,
                 id_tipo_despesa: movimento.tipoDespesa ? parseInt(movimento.tipoDespesa) : null,
                 id_dentista: movimento.dentista ? parseInt(movimento.dentista) : null,
@@ -142,29 +153,32 @@ function NovoMovimento() {
     };
 
     const validateFields = () => {
+        const newErrors = {};
+
         if (!movimento.operacao) {
-            setErrorMessage('Operação é obrigatória.');
-            return false;
+            newErrors.operacao = 'Operação é obrigatória.';
         }
 
         if (!movimento.valor) {
-            setErrorMessage('Valor é obrigatório.');
-            return false;
+            newErrors.valor = 'Valor é obrigatório.';
         }
 
         if (movimento.operacao === 'Receita' && !movimento.tipoReceita) {
-            setErrorMessage('Tipo de Receita é obrigatório.');
-            return false;
+            newErrors.tipoReceita = 'Tipo de Receita é obrigatório.';
+        }
+
+        if (movimento.operacao === 'Receita' && !movimento.dentista) {
+            newErrors.tipoReceita = 'Dentista é obrigatório.';
         }
 
         if (movimento.operacao === 'Despesa' && !movimento.tipoDespesa) {
-            setErrorMessage('Tipo de Despesa é obrigatório.');
-            return false;
+            newErrors.tipoDespesa = 'Tipo de Despesa é obrigatório.';
         }
 
-        setErrorMessage('');
-        return true;
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
+
 
     const buttons = [
         { type: 'save', text: 'Salvar', onClick: handleSave },
@@ -175,14 +189,47 @@ function NovoMovimento() {
         buttons.push({ type: 'delete', text: 'Excluir', onClick: handleDelete });
     }
 
+    const handleValorChange = (e) => {
+        let value = e.target.value;
+
+        value = value.replace(/[^\d,]/g, '');
+
+        if (value.indexOf(',') !== -1) {
+            const parts = value.split(',');
+            parts[0] = parts[0].replace(/\D/g, ''); // Remove não-dígitos antes da vírgula
+            parts[1] = parts[1].slice(0, 2); // Limita a parte decimal a 2 casas
+            value = parts.join(',');
+        } else {
+            value = value.replace(/\D/g, ''); // Remove não-dígitos
+        }
+
+        // Adiciona a vírgula para os centavos se o valor for suficientemente longo
+        if (value.length > 2) {
+            value = value.replace(/(\d+)(\d{2})$/, '$1,$2'); // Coloca a vírgula antes dos últimos 2 dígitos
+        }
+
+        // Atualiza o estado com o valor formatado
+        setMovimento((prev) => ({ ...prev, valor: value }));
+    };
+
+
+    const sanitizeValor = (valorFormatado) => {
+        const valorSanitizado = valorFormatado
+            .replace(/[^\d,]/g, '')
+            .replace(',', '.');
+        return parseFloat(valorSanitizado);
+    };
+
+
     return (
         <Dashboard error={generalError}>
             <div className={styles.formWrapper}>
                 <h1 className={styles.title}>{isEditing ? 'Editar Movimento' : 'Adicionar Novo Movimento'}</h1>
                 <form className={styles.form}>
                     <div className={styles.operationAndDate}>
-                        <div className={styles.formGroupHalf}>
+                        <div className={styles.formGroup}>
                             <label htmlFor="operacao">Operação</label>
+                            {errors.operacao && <span className={styles.error}>{errors.operacao}</span>}
                             <select
                                 id="operacao"
                                 name="operacao"
@@ -190,7 +237,7 @@ function NovoMovimento() {
                                 onChange={(e) => {
                                     handleChange(e);
                                     if (e.target.value === 'Sangria' || e.target.value === 'Aporte') {
-                                        setMovimento(prev => ({ ...prev, modalidade: 'Dinheiro' }));
+                                        setMovimento(prev => ({...prev, modalidade: 'Dinheiro'}));
                                     }
                                 }}
                             >
@@ -206,6 +253,7 @@ function NovoMovimento() {
                         <>
                             <div className={styles.formGroup}>
                                 <label htmlFor="tipoReceita">Tipo de Receita</label>
+                                {errors.tipoReceita && <span className={styles.error}>{errors.tipoReceita}</span>}
                                 <select
                                     id="tipoReceita"
                                     name="tipoReceita"
@@ -222,6 +270,7 @@ function NovoMovimento() {
                             </div>
                             <div className={styles.formGroup}>
                                 <label htmlFor="dentista">Dentista</label>
+                                {errors.dentista && <span className={styles.error}>{errors.dentista}</span>}
                                 <select
                                     id="dentista"
                                     name="dentista"
@@ -242,6 +291,7 @@ function NovoMovimento() {
                         <>
                             <div className={styles.formGroup}>
                                 <label htmlFor="tipoDespesa">Tipo de Despesa</label>
+                                {errors.tipoDespesa && <span className={styles.error}>{errors.tipoDespesa}</span>}
                                 <select
                                     id="tipoDespesa"
                                     name="tipoDespesa"
@@ -258,6 +308,7 @@ function NovoMovimento() {
                             </div>
                             <div className={styles.formGroup}>
                                 <label htmlFor="dentista">Dentista</label>
+                                {errors.dentista && <span className={styles.error}>{errors.dentista}</span>}
                                 <select
                                     id="dentista"
                                     name="dentista"
@@ -265,6 +316,7 @@ function NovoMovimento() {
                                     onChange={handleChange}
                                 >
                                     <option value="">Selecione o Dentista</option>
+                                    <option value="Nenhum">Nenhum</option>
                                     {dentistas.map((dentista) => (
                                         <option key={dentista.id} value={dentista.id}>
                                             {dentista.nome}
@@ -274,14 +326,15 @@ function NovoMovimento() {
                             </div>
                             <div className={styles.formGroup}>
                                 <label htmlFor="fornecedor">Fornecedor</label>
+                                {errors.fornecedor && <span className={styles.error}>{errors.fornecedor}</span>}
                                 <select
                                     id="fornecedor"
                                     name="fornecedor"
                                     value={movimento.fornecedor}
                                     onChange={handleChange}
                                 >
-                                    <option value="Nenhum">Nenhum</option>
                                     <option value="">Selecione o Fornecedor</option>
+                                    <option value="Nenhum">Nenhum</option>
                                     {fornecedores.map((fornecedor) => (
                                         <option key={fornecedor.id} value={fornecedor.id}>
                                             {fornecedor.nome}
@@ -294,6 +347,7 @@ function NovoMovimento() {
                     {movimento.operacao && (
                         <div className={styles.formGroup}>
                             <label htmlFor="modalidade">Modalidade de Pagamento</label>
+                            {errors.modalidade && <span className={styles.error}>{errors.modalidade}</span>}
                             <select
                                 id="modalidade"
                                 name="modalidade"
@@ -312,6 +366,7 @@ function NovoMovimento() {
                     {(movimento.modalidade === 'Crédito' || movimento.modalidade === 'Transferência') && (
                         <div className={styles.formGroup}>
                             <label htmlFor="taxa">Taxa (%)</label>
+                            {errors.taxa && <span className={styles.error}>{errors.taxa}</span>}
                             <input
                                 id="taxa"
                                 name="taxa"
@@ -324,16 +379,22 @@ function NovoMovimento() {
                     )}
                     <div className={styles.formGroup}>
                         <label htmlFor="valor">Valor</label>
-                        <input
+                        {errors.valor && <span className={styles.error}>{errors.valor}</span>}
+                        <InputMask
+                            mask="R$ 999.999.999,99" // Máscara de valor monetário
                             id="valor"
                             name="valor"
-                            type="text"
                             value={movimento.valor}
-                            onChange={handleChange}
-                        />
+                            onChange={(e) => handleValorChange(e)} // Chama a função para atualizar o valor
+                            onFocus={(e) => e.target.select()} // Seleciona o valor ao focar
+                            maskChar="" // Evita o uso do caractere de máscara como espaços
+                        >
+                            {(inputProps) => <input {...inputProps} type="text"/>}
+                        </InputMask>
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="descricao">Descrição</label>
+                        {errors.descricao && <span className={styles.error}>{errors.descricao}</span>}
                         <textarea
                             id="descricao"
                             name="descricao"
@@ -342,7 +403,7 @@ function NovoMovimento() {
                         />
                     </div>
                 </form>
-                <Footer buttons={buttons} />
+                <Footer buttons={buttons}/>
             </div>
         </Dashboard>
     );
