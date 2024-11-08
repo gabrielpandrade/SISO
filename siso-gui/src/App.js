@@ -30,7 +30,7 @@ function App() {
 
                 <Route path="/caixa" element={<PrivateRoute><Caixa /></PrivateRoute>} />
                 <Route path="/novo-movimento" element={<PrivateRoute><NovoMovimento /></PrivateRoute>} />
-                <Route path="/novo-movimento/:id" element={<PrivateRoute><NovoMovimento /></PrivateRoute>} />
+                <Route path="/item-movimento/:id" element={<PrivateRoute><NovoMovimento /></PrivateRoute>} />
 
                 <Route path="/dentistas" element={<PrivateRoute><Dentistas/></PrivateRoute>} />
                 <Route path="/novo-dentista" element={<PrivateRoute><NovoDentista /></PrivateRoute>} />

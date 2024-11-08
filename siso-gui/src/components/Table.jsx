@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa'; // Importando ícone de lápis
 import styles from '../styles/components/Table.module.css';
 
-function Table({ data, columns, onEditClick }) {
+function Table({ data, columns, onEditClick, onCaixaClick }) {
     const rowsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState(''); // Estado para a barra de pesquisa

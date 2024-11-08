@@ -42,7 +42,8 @@ function Usuarios() {
 
     const columns = [
         { key: 'nome', label: 'Nome' },
-        { key: 'email', label: 'Email' }
+        { key: 'email', label: 'Email' },
+        { key: 'permissoes', label: 'Permissoes' },
     ];
 
     const buttons = [
@@ -57,6 +58,7 @@ function Usuarios() {
                     data={usuarios}
                     columns={columns}
                     onEditClick={(id) => navigate(`/usuarios/${id}`)}
+                    onCaixaClick={(id) => navigate(`/usuarios/caixas/${id}`)}
                     onActionClick={handleViewCaixas}
                     actionLabel="Ver Caixas"
                 />

@@ -43,11 +43,12 @@ function Caixa() {
     const formatData = (data) => {
         return data.map(item => ({
             ...item,
-            fornecedor: item.fornecedor ? item.fornecedor.nome : 'Nenhum',
-            dentista: item.dentista ? item.dentista.nome : 'Nenhum',
+            modalidade: item.modalidadePagamento,
+            fornecedor: item.fornecedor ? item.fornecedor.nome : '-',
+            dentista: item.dentista ? item.dentista.nome : '-',
             valor: item.valor ? item.valor.toFixed(2) : '0.00',
             dataHora: item.dataHoraMovimento ? item.dataHoraMovimento : 'Data não disponível',
-            tipo: item.receita ? item.receita.descricao : (item.despesa ? item.despesa.descricao : 'Nenhum')
+            tipo: item.receita ? item.receita.descricao : (item.despesa ? item.despesa.descricao : '-')
         }));
     };
 
@@ -110,7 +111,7 @@ function Caixa() {
                     </div>
                 ) : (
                     <>
-                        <Table data={movements} columns={columns} />
+                        <Table data={movements} columns={columns} onEditClick={(id) => navigate(`/item-movimento/${id}`)}/>
                         <div className={styles.footerWrapper}>
                             <Footer buttons={footerButtons} />
                         </div>

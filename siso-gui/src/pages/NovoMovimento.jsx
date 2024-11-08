@@ -24,16 +24,16 @@ function NovoMovimento() {
     const adjustedDate = new Date(dataHora.getTime() - offset * 60000).toISOString();
 
     const [movimento, setMovimento] = useState({
-        operacao: '',
-        modalidade: 'Dinheiro',
-        valor: '',
-        descricao: '',
-        dataHora: new Date(dataHora.getTime() - offset * 60000).toISOString().slice(0, 16),
+        operacao: null,
+        modalidade: null,
+        valor: null,
+        descricao: null,
+        dataHora: new Date(dataHora.getTime()).toISOString(),
         taxa: 5,
-        dentista: '',
-        fornecedor: '',
-        tipoReceita: '',
-        tipoDespesa: ''
+        dentista: null,
+        fornecedor: null,
+        tipoReceita: null,
+        tipoDespesa: null,
     });
 
     const [isEditing, setIsEditing] = useState(false);
@@ -66,8 +66,6 @@ function NovoMovimento() {
                     return;
                 }
 
-
-
                 const [dentistasData, fornecedoresData, tipoReceitasData, tipoDespesasData] = await Promise.all([
                     fetchDentistas(),
                     fetchFornecedores(),
@@ -96,7 +94,7 @@ function NovoMovimento() {
                     }
                 }
             } catch (error) {
-                console.error('Erro ao carregar dados:', error);
+                handleBackendError(error);
             }
         };
 
@@ -117,7 +115,7 @@ function NovoMovimento() {
             const movimentoData = {
                 operacao: movimento.operacao,
                 modalidade: movimento.modalidade,
-                valor: parseFloat(movimento.valor.replace(',', '.')),
+                valor: parseFloat(movimento.valor),
                 dataHoraMovimento: adjustedDate,
                 id_tipo_receita: movimento.tipoReceita ? parseInt(movimento.tipoReceita) : null,
                 id_tipo_despesa: movimento.tipoDespesa ? parseInt(movimento.tipoDespesa) : null,
@@ -133,17 +131,16 @@ function NovoMovimento() {
 
             navigate('/caixa');
         } catch (error) {
-            console.error('Erro ao salvar movimento:', error.response ? error.response.data : error.message);
+            handleBackendError(error);
         }
     };
-
 
     const handleDelete = async () => {
         try {
             await deleteMovimento(id);
             navigate('/caixa');
         } catch (error) {
-            console.error('Erro ao excluir movimento:', error);
+            handleBackendError(error);
         }
     };
 
@@ -323,12 +320,14 @@ function NovoMovimento() {
                                 disabled={movimento.operacao === 'Aporte' || movimento.operacao === 'Sangria'}
                             >
                                 <option value="Dinheiro">Dinheiro</option>
-                                <option value="Cartão">Cartão</option>
-                                <option value="Transferência">Transferência</option>
+                                <option value="Crédito">Crédito</option>
+                                <option value="Débito">Débito</option>
+                                <option value="PIX">PIX</option>
+                                <option value="Cheque">Cheque</option>
                             </select>
                         </div>
                     )}
-                    {(movimento.modalidade === 'Cartão' || movimento.modalidade === 'Transferência') && (
+                    {(movimento.modalidade === 'Crédito' || movimento.modalidade === 'Transferência') && (
                         <div className={styles.formGroup}>
                             <label htmlFor="taxa">Taxa (%)</label>
                             <input

@@ -29,7 +29,8 @@ const Dashboard = ({ children, error }) => {
 
         const adminStatus = isAdmin();
         console.log("admin", isAdmin())
-        setAdmin(adminStatus.PromiseResult);
+        setAdmin(true);
+       // setAdmin(adminStatus.PromiseResult);
         fetchUserName();
         setError(error);
     }, [error]);

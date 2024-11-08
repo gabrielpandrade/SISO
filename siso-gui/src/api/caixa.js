@@ -61,10 +61,10 @@ export const fetchMovimentoById = async (movimentoId) => {
         throw error;
     }
 };
-
 export const fetchMovimentosByCaixa = async () => {
     try {
         const response = await api.get(`/caixa/movimentos`);
+        console.log('Response data:', response.data); // Log para inspecionar a resposta
         if (response.status === 200) {
             return response.data;
         } else {
@@ -76,17 +76,34 @@ export const fetchMovimentosByCaixa = async () => {
     }
 };
 
+
+export const getCaixaId = async() =>{
+    try{
+        const response = await api.get(`/caixa`);
+        console.log("response:", response);
+        if (response.status === 200) {
+            console.log("id_caixa", response.data);
+            return response.data;
+        }else{
+            return null;
+        }
+    }catch(error){
+        console.log("erro, não foi possível buscar o id do caixa");
+        throw error;}
+}
+
 export const addMovimento = async (movimento) => {
     try {
         const payload = {
             operacao: movimento.operacao || '',
-            modalidade: movimento.modalidadePagamento || '',
+            modalidadePagamento: movimento.modalidade || '',
             valor: movimento.valor !== undefined ? movimento.valor : 0,
             dataHoraMovimento: movimento.dataHoraMovimento,
             id_tipo_despesa: movimento.id_tipo_despesa || null,
             id_tipo_receita: movimento.id_tipo_receita||null,
             id_dentista: movimento.id_dentista||null,
             id_fornecedor:movimento.id_fornecedor||null,
+            id_caixa: await getCaixaId(),
         };
         const response = await api.post(`/movimento`, payload);
         return response.data;
@@ -101,16 +118,17 @@ export const updateMovimento = async (id, movimento) => {
     try {
         const payload = {
             operacao: movimento.operacao || '',
-            modalidadePagamento: movimento.modalidadePagamento || '',
+            modalidadePagamento: movimento.modalidade || '',
             valor: movimento.valor !== undefined ? movimento.valor : 0,
             dataHoraMovimento: movimento.dataHoraMovimento,
             id_tipo_despesa: movimento.id_tipo_despesa || null,
             id_tipo_receita: movimento.id_tipo_receita||null,
             id_dentista: movimento.id_dentista||null,
             id_fornecedor:movimento.id_fornecedor||null,
+            id_caixa: await getCaixaId(),
         };
 
-        const response = await api.put(`$/movimento/${id}`, payload);
+        const response = await api.put(`/movimento/${id}`, payload);
         return response.data;
     } catch (error) {
         console.error('Erro ao atualizar movimento:', error.response?.data || error.message);
