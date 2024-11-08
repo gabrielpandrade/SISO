@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import styles from "../styles/pages/LoginPage.module.css";
 import olhoNormal from "../images/olhoNormal.svg";
+import {FaQuestionCircle} from "react-icons/fa";
+import ErrorPopup from "./ErrorPopup";
+import HelpModal from "./HelpModal";
 
 
 function Login() {
@@ -11,7 +14,11 @@ function Login() {
   const [login, setLogin] = useState("");
   const [senha, setSenha] = useState("");
   const [error, setError] = useState("");
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false); // Estado para o HelpModal
 
+  const toggleHelpModal = () => {
+    setIsHelpModalOpen(!isHelpModalOpen); // Alterna a exibição do HelpModal
+  };
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -106,8 +113,20 @@ function Login() {
             <button type="submit" className={styles.loginButton}>
               Login
             </button>
+
           </form>
         </div>
+        <FaQuestionCircle
+            className={styles.helpIcon}
+            onClick={toggleHelpModal}
+            title="Ajuda"
+        />
+        {isHelpModalOpen && (
+            <HelpModal
+                isOpen={isHelpModalOpen}
+                onClose={toggleHelpModal}
+            />
+        )}
       </main>
   );
 }

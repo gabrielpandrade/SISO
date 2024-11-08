@@ -1,8 +1,9 @@
-// src/components/ProfileModal.jsx
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/components/ProfileModal.module.css';
 import { getMyInfo, updateMyInfo, updateMySenha } from '../api/user';
-import { FaEdit } from 'react-icons/fa';
+import { FaEdit,FaQuestionCircle } from 'react-icons/fa';
+import ErrorPopup from './ErrorPopup';
+import HelpModal from './HelpModal';
 
 function ProfileModal({ isOpen, onClose }) {
     const [userInfo, setUserInfo] = useState(null);
@@ -14,13 +15,15 @@ function ProfileModal({ isOpen, onClose }) {
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmNewPassword, setConfirmNewPassword] = useState("");
+    const [isHelpModalOpen, setIsHelpModalOpen] = useState(false); // Estado para o HelpModal
 
     const handleClose = () => {
         setIsChangingPassword(false);
         setIsEditingEmail(false);
+        setError(null); // Limpar erro ao fechar o modal
         onClose();
-
     };
+
     useEffect(() => {
         const fetchUserInfo = async () => {
             setLoading(true);
@@ -43,33 +46,73 @@ function ProfileModal({ isOpen, onClose }) {
     }, [isOpen]);
 
     const handleEmailEdit = () => {
+        if (!newEmail) {
+            setError("O email não pode estar vazio.");
+            return;
+        }
+
         if (isEditingEmail) {
             updateMyInfo(newEmail)
                 .then(() => {
                     setUserInfo((prev) => ({ ...prev, email: newEmail }));
                     setIsEditingEmail(false);
+                    setError(null);
                 })
-                .catch((err) => setError("Erro ao editar o email: " + err));
+                .catch((err) => {
+                    if (err.response && err.response.status === 500) {
+                        setError("Erro interno no servidor. Por favor, tente novamente mais tarde.");
+                    } else {
+                        setError("Erro ao editar o email: " + (err.response?.data?.message || err.message));
+                    }
+                });
         } else {
             setIsEditingEmail(true);
         }
     };
-
-    const handleChangePassword = () => {
-        if (newPassword === confirmNewPassword) {
-            updateMySenha(oldPassword, newPassword)
-                .then(() => {
-                    setOldPassword("");
-                    setNewPassword("");
-                    setConfirmNewPassword("");
-                    setIsChangingPassword(false);
-                })
-                .catch((err) => setError("Erro ao atualizar a senha: " + err));
-        } else {
-            setError("As senhas não coincidem.");
-        }
+    const toggleHelpModal = () => {
+        setIsHelpModalOpen(!isHelpModalOpen); // Alterna a exibição do HelpModal
     };
+    const handleChangePassword = () => {
+        // Verificar se todos os campos de senha estão preenchidos
+        if (!oldPassword || !newPassword || !confirmNewPassword) {
+            setError("Todos os campos de senha precisam ser preenchidos.");
+            return;
+        }
 
+        // Verificar se as senhas coincidem
+        if (newPassword !== confirmNewPassword) {
+            setError("As senhas não coincidem.");
+            return;
+        }
+
+        updateMySenha(oldPassword, newPassword)
+            .then(() => {
+                setOldPassword("");
+                setNewPassword("");
+                setConfirmNewPassword("");
+                setIsChangingPassword(false);
+                setError(null);
+            })
+            .catch((err) => {
+                if (err.response) {
+                    switch (err.response.status) {
+                        case 400:
+                            setError("Requisição inválida. Verifique os campos e tente novamente.");
+                            break;
+                        case 401:
+                            setError("Senha antiga incorreta. Por favor, tente novamente.");
+                            break;
+                        case 500:
+                            setError("Erro interno no servidor. Por favor, tente novamente mais tarde.");
+                            break;
+                        default:
+                            setError("Erro ao atualizar a senha: " + (err.response.data.message || err.message));
+                    }
+                } else {
+                    setError("Erro de rede ou servidor indisponível.");
+                }
+            });
+    };
     return (
         isOpen && (
             <div className={styles.modalOverlay}>
@@ -77,11 +120,9 @@ function ProfileModal({ isOpen, onClose }) {
                     <h2>Perfil</h2>
                     {loading ? (
                         <p>Carregando...</p>
-                    ) : error ? (
-                        <p className={styles.error}>{error}</p>
                     ) : (
                         <div>
-                            <p><strong>Login:</strong> {userInfo.login}</p>
+                            <p><strong>Login:</strong> {userInfo?.login}</p>
                             <div className={styles.emailEditContainer}>
                                 <strong>Email:</strong>
                                 {isEditingEmail ? (
@@ -92,12 +133,13 @@ function ProfileModal({ isOpen, onClose }) {
                                             onChange={(e) => setNewEmail(e.target.value)}
                                             className={styles.emailInput}
                                         />
-                                        <button onClick={handleEmailEdit} className={styles.saveEmailButton}>Salvar
+                                        <button onClick={handleEmailEdit} className={styles.saveEmailButton}>
+                                            Salvar
                                         </button>
                                     </>
                                 ) : (
                                     <>
-                                        {userInfo.email}
+                                        {userInfo?.email}
                                         <FaEdit
                                             title="Editar"
                                             onClick={() => setIsEditingEmail(true)}
@@ -107,7 +149,7 @@ function ProfileModal({ isOpen, onClose }) {
                                 )}
                             </div>
 
-                            <p><strong>Permissões:</strong> {userInfo.permissoes}</p> {/* Linha de permissões */}
+                            <p><strong>Permissões:</strong> {userInfo?.permissoes ? userInfo.permissoes.join(', ') : 'N/A'}</p>
 
                             {isChangingPassword && (
                                 <div className={styles.passwordFields}>
@@ -141,12 +183,30 @@ function ProfileModal({ isOpen, onClose }) {
                     )}
 
                     <div className={styles.buttonContainer}>
-                        <button onClick={() => setIsChangingPassword(!isChangingPassword)}
-                                className={styles.modifyPasswordButton}>
+                        <button onClick={() => setIsChangingPassword(!isChangingPassword)} className={styles.modifyPasswordButton}>
                             {isChangingPassword ? "Cancelar" : "Modificar Senha"}
                         </button>
                         <button onClick={handleClose} className={styles.closeButton}>Fechar</button>
                     </div>
+                    <FaQuestionCircle
+                        className={styles.helpIcon}
+                        onClick={toggleHelpModal}
+                        title="Ajuda"
+                    />
+                    {/* ErrorPopup integrado */}
+                    {error && (
+                        <ErrorPopup
+                            message={error}
+                            onClose={() => setError(null)} // Fechar o popup limpa a mensagem de erro
+                        />
+                    )}
+                    {isHelpModalOpen && (
+                        <HelpModal
+                            isOpen={isHelpModalOpen}
+                            onClose={toggleHelpModal}
+                            perfil={true}
+                        />
+                    )}
                 </div>
             </div>
         )

@@ -67,7 +67,7 @@ const Dashboard = ({ children, error }) => {
             </div>
             <ProfileModal isOpen={isProfileOpen} onClose={handleCloseProfile} />
             <ErrorPopup message={erro} onClose={handleCloseError} />
-            <HelpModal isOpen={isHelpOpen} onClose={handleCloseHelp} currentScreen={location.pathname} modais={modais} mensagem={erro}/>
+            <HelpModal isOpen={isHelpOpen} onClose={handleCloseHelp}/>
         </div>
     );
 };

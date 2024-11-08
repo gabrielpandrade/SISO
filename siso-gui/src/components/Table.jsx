@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaEdit } from 'react-icons/fa'; // Importando ícone de lápis
 import styles from '../styles/components/Table.module.css';
 
-function Table({ data, columns, onEditClick, onCaixaClick }) {
+function Table({ data, columns, onEditClick, caixaVazio }) {
     const rowsPerPage = 5;
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState(''); // Estado para a barra de pesquisa
     const maxPageButtons = 5; // Número máximo de botões de página visíveis
+    const [loading, setLoading] = useState(true); // Estado para carregamento
+
+    // Simulação de carregamento de dados (use isso apenas como exemplo)
+    useEffect(() => {
+        if (data && data.length > 0) {
+            setLoading(false);
+        } else if (caixaVazio) {
+            setLoading(false); // Para garantir que "Carregando..." não apareça se `caixaVazio` for true
+        }
+    }, [data, caixaVazio]);
 
     if (!data || !columns) return null;
 
@@ -46,95 +56,100 @@ function Table({ data, columns, onEditClick, onCaixaClick }) {
 
     return (
         <div className={styles.tableContainer}>
-            <div className={styles.searchBar}>
-                <input
-                    type="text"
-                    placeholder="Pesquisar..."
-                    className={styles.searchInput}
-                    value={searchQuery}
-                    onChange={(e) => {
-                        setSearchQuery(e.target.value);
-                        setCurrentPage(1); // Resetar para a primeira página ao pesquisar
-                    }}
-                />
-            </div>
-            <table className={styles.table}>
-                <thead>
-                <tr>
-                    {columns.map((col) => (
-                        <th key={col.key}>{col.label}</th>
-                    ))}
-                    <th>Ações</th> {/* Coluna para os ícones de ação */}
-                </tr>
-                </thead>
-                <tbody>
-                {currentRows.length > 0 ? (
-                    currentRows.map((row) => (
-                        <tr key={row.id}>
+            {loading && !caixaVazio ? (
+                <p className={styles.loadingMessage}>Carregando...</p>
+            ) : (
+                <>
+                    <div className={styles.searchBar}>
+                        <input
+                            type="text"
+                            placeholder="Pesquisar..."
+                            className={styles.searchInput}
+                            value={searchQuery}
+                            onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                                setCurrentPage(1); // Resetar para a primeira página ao pesquisar
+                            }}
+                        />
+                    </div>
+                    <table className={styles.table}>
+                        <thead>
+                        <tr>
                             {columns.map((col) => (
-                                <td key={col.key}>
-                                    {typeof row[col.key] === 'object'
-                                        ? JSON.stringify(row[col.key])
-                                        : row[col.key]}
-                                </td>
+                                <th key={col.key}>{col.label}</th>
                             ))}
-                            <td className={styles.editIcon}>
-                                <FaEdit
-                                    title="Editar"
-                                    onClick={() => onEditClick(row.id)}
-                                    className={styles.icon}
-                                />
-                            </td>
+                            <th>Ações</th>
+                            {/* Coluna para os ícones de ação */}
                         </tr>
-                    ))
-                ) : (
-                    <tr>
-                        <td colSpan={columns.length + 1} style={{ textAlign: 'center' }}>
-                            Nenhum resultado encontrado.
-                        </td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
-            <div className={styles.pagination}>
-                <button
-                    className={styles.paginationButton}
-                    onClick={() => handlePageChange(1)}
-                    disabled={currentPage === 1}
-                >
-                    Primeira
-                </button>
-                <button
-                    className={styles.paginationButton}
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                >
-                    Anterior
-                </button>
-                {getPageRange().map((pageNumber) => (
-                    <button
-                        key={pageNumber}
-                        className={`${styles.paginationButton} ${currentPage === pageNumber ? styles.activePage : ''}`}
-                        onClick={() => handlePageChange(pageNumber)}
-                    >
-                        {pageNumber}
-                    </button>
-                ))}
-                <button
-                    className={styles.paginationButton}
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                >
-                    Próximo
-                </button>
-                <button
-                    className={styles.paginationButton}
-                    onClick={() => handlePageChange(totalPages)}
-                    disabled={currentPage === totalPages}
-                >
-                    Última
-                </button>
-            </div>
+                        </thead>
+                        <tbody>
+                        {currentRows.length > 0 ? (
+                            currentRows.map((row) => (
+                                <tr key={row.id}>
+                                    {columns.map((col) => (
+                                        <td key={col.key}>
+                                            {col.render ? col.render(row) : row[col.key]}
+                                        </td>
+                                    ))}
+                                    <td className={styles.editIcon}>
+                                        <FaEdit
+                                            title="Editar"
+                                            onClick={() => onEditClick(row.id)}
+                                            className={styles.icon}
+                                        />
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={columns.length + 1} style={{ textAlign: 'center' }}>
+                                    Nenhum resultado encontrado.
+                                </td>
+                            </tr>
+                        )}
+                        </tbody>
+                    </table>
+                    <div className={styles.pagination}>
+                        <button
+                            className={styles.paginationButton}
+                            onClick={() => handlePageChange(1)}
+                            disabled={currentPage === 1}
+                        >
+                            Primeira
+                        </button>
+                        <button
+                            className={styles.paginationButton}
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                        >
+                            Anterior
+                        </button>
+                        {getPageRange().map((pageNumber) => (
+                            <button
+                                key={pageNumber}
+                                className={`${styles.paginationButton} ${currentPage === pageNumber ? styles.activePage : ''}`}
+                                onClick={() => handlePageChange(pageNumber)}
+                            >
+                                {pageNumber}
+                            </button>
+                        ))}
+                        <button
+                            className={styles.paginationButton}
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                        >
+                            Próximo
+                        </button>
+                        <button
+                            className={styles.paginationButton}
+                            onClick={() => handlePageChange(totalPages)}
+                            disabled={currentPage === totalPages}
+                        >
+                            Última
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
