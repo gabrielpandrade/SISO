@@ -47,7 +47,7 @@ function Caixa() {
             fornecedor: item.fornecedor ? item.fornecedor.nome : '-',
             dentista: item.dentista ? item.dentista.nome : '-',
             valor: item.valor ? item.valor.toFixed(2) : '0.00',
-            dataHora: item.dataHoraMovimento ? item.dataHoraMovimento.toISOString() : 'Data não disponível',
+            dataHora: item.dataHoraMovimento ? item.dataHoraMovimento: 'Data não disponível',
             tipo: item.receita ? item.receita.descricao : (item.despesa ? item.despesa.descricao : '-')
         }));
     };
