@@ -60,8 +60,6 @@ public class ItemMovimentoService {
     @Transactional
     public void updateItemMovimento(ItemMovimento itemMovimento) {
         ItemMovimento newItemMovimento = findById(itemMovimento.getId());
-        newItemMovimento.setCaixa(itemMovimento.getCaixa());
-        newItemMovimento.setDataHoraMovimento(itemMovimento.getDataHoraMovimento());
         newItemMovimento.setDentista(itemMovimento.getDentista());
         newItemMovimento.setFornecedor(itemMovimento.getFornecedor());
         newItemMovimento.setTipoDespesa(itemMovimento.getTipoDespesa());
