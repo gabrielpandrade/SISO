@@ -47,9 +47,8 @@ export const checkCaixaStatus = async () => {
 export const fetchMovimentoById = async (movimentoId) => {
     try {
         const response = await api.get(`/movimento/${movimentoId}`);
-        console.log("resposta:",response);
+        console.log("resposta:",response.data);
         if (response.status === 200) {
-            console.log(response);
             return response.data;
         } else {
             throw new Error('Failed to fetch movimento');
