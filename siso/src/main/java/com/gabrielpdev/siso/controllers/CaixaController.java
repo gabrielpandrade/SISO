@@ -4,6 +4,7 @@ import com.gabrielpdev.siso.models.Caixa;
 import com.gabrielpdev.siso.models.ItemMovimento;
 import com.gabrielpdev.siso.models.exceptions.ObjectNotFoundException;
 import com.gabrielpdev.siso.services.CaixaService;
+import com.gabrielpdev.siso.services.ItemMovimentoService;
 import com.gabrielpdev.siso.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -23,6 +24,8 @@ public class CaixaController {
 
     @Autowired
     CaixaService caixaService;
+    @Autowired
+    private ItemMovimentoService itemMovimentoService;
 
     @GetMapping("/caixa")
     public ResponseEntity<Long> getCaixa() {
@@ -55,7 +58,7 @@ public class CaixaController {
         Long id = usuarioService.authenticated().getId();
         Optional<Caixa> caixa_opt = caixaService.getCaixaAberto(id);
         Caixa caixa = caixa_opt.orElseThrow(() -> new DataIntegrityViolationException("O caixa está fechado"));
-        List<ItemMovimento> movimentos = caixaService.getItemMovimentosByCaixaId(caixa.getId());
+        List<ItemMovimento> movimentos = itemMovimentoService.findByCaixaId(caixa.getId());
         return ResponseEntity.ok().body(movimentos);
     }
 
@@ -76,13 +79,13 @@ public class CaixaController {
     public ResponseEntity<List<ItemMovimento>> getMovimentosByUsuarioAdmin(@PathVariable Long id_usuario){
         Optional<Caixa> caixa_opt = caixaService.getCaixaAberto(id_usuario);
         Caixa caixa = caixa_opt.orElseThrow(() -> new ObjectNotFoundException("Caixa não encontrado"));
-        List<ItemMovimento> movimentos = caixaService.getItemMovimentosByCaixaId(caixa.getId());
+        List<ItemMovimento> movimentos = itemMovimentoService.findByCaixaId(caixa.getId());
         return ResponseEntity.ok().body(movimentos);
     }
 
     @GetMapping("/admin/caixa/{id_caixa}/movimentos")
     public ResponseEntity<List<ItemMovimento>> getMovimentosByCaixaAdmin(@PathVariable Long id_caixa){
-        List<ItemMovimento> movimentos = caixaService.getItemMovimentosByCaixaId(id_caixa);
+        List<ItemMovimento> movimentos = itemMovimentoService.findByCaixaId(id_caixa);
         return ResponseEntity.ok().body(movimentos);
     }
 
