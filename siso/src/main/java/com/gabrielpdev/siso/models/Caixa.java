@@ -30,7 +30,7 @@ public class Caixa {
     private OffsetDateTime dataHoraFechamento;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)
     private Usuario usuario;
 }

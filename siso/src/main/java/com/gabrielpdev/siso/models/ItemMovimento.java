@@ -36,23 +36,23 @@ public class ItemMovimento {
     private OffsetDateTime dataHoraMovimento;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "id_caixa", nullable = false)
     private Caixa caixa;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_tipo_despesa")
     private TipoDespesa tipoDespesa;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_tipo_receita")
     private TipoReceita tipoReceita;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_dentista")
     private Dentista dentista;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "id_fornecedor")
     private Fornecedor fornecedor;
 
