@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Dashboard from '../components/Dashboard';
 import Footer from '../components/Footer';
 import styles from '../styles/pages/NovoUsuario.module.css';
-import { fetchUserById, createUser, updateUsuario, deleteUser } from '../api/user';
+import { createUser } from '../api/user'; // Removido update e delete, pois não são mais necessários.
 
 function NovoUsuario() {
-    const { id } = useParams();
     const navigate = useNavigate();
 
     const [usuario, setUsuario] = useState({
@@ -14,38 +13,9 @@ function NovoUsuario() {
         password: '',
         email: ''
     });
-    const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [errors, setErrors] = useState({});
     const [generalError, setGeneralError] = useState(null);
-    const [title, setTitle] = useState('NOVO USUÁRIO');
-
-    useEffect(() => {
-        if (id) {
-            const getUsuario = async () => {
-                try {
-                    const data = await fetchUserById(id);
-                    setUsuario(data);
-                    setIsEditing(true);
-                    setTitle('EDITAR USUÁRIO');
-                } catch (error) {
-                    handleBackendError(error);
-                }
-            };
-            getUsuario();
-        }
-    }, [id]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setUsuario((prev) => ({ ...prev, [name]: value }));
-        setErrors((prev) => ({ ...prev, [name]: '' }));
-    };
-
-    const sanitizeUsuario = (usuario) => {
-        const sanitized = { ...usuario };
-        return sanitized;
-    };
 
     const validateFields = () => {
         const newErrors = {};
@@ -59,6 +29,16 @@ function NovoUsuario() {
             newErrors.email = 'O email deve ser válido.';
         }
         return newErrors;
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setUsuario((prev) => ({ ...prev, [name]: value }));
+        setErrors((prev) => ({ ...prev, [name]: '' }));
+    };
+
+    const sanitizeUsuario = (usuario) => {
+        return { ...usuario }; // Simples sanitização
     };
 
     const handleSave = async () => {
@@ -77,12 +57,8 @@ function NovoUsuario() {
         const sanitizedUsuario = sanitizeUsuario(usuario);
 
         try {
-            if (isEditing) {
-                await updateUsuario(id, sanitizedUsuario);
-            } else {
-                await createUser(sanitizedUsuario);
-            }
-            navigate('/usuarios');
+            await createUser(sanitizedUsuario); // Apenas cria o novo usuário
+            navigate('/usuarios'); // Redireciona para a lista de usuários após salvar
         } catch (error) {
             handleBackendError(error);
         } finally {
@@ -90,17 +66,8 @@ function NovoUsuario() {
         }
     };
 
-    const handleDelete = async () => {
-        try {
-            await deleteUser(id);
-            navigate('/usuarios');
-        } catch (error) {
-            handleBackendError(error);
-        }
-    };
-
     const handleCancel = () => {
-        navigate('/usuarios');
+        navigate('/usuarios'); // Volta para a lista de usuários ao cancelar
     };
 
     const handleSubmit = (e) => {
@@ -131,14 +98,10 @@ function NovoUsuario() {
         { type: 'cancel', text: 'Voltar', onClick: handleCancel }
     ];
 
-    if (isEditing) {
-        buttons.push({ type: 'delete', text: 'Excluir', onClick: handleDelete });
-    }
-
     return (
-        <Dashboard title={title} error={generalError}>
+        <Dashboard title="NOVO USUÁRIO" error={generalError}>
             <div className={styles.formWrapper}>
-                <h1 className={styles.title}>{isEditing ? 'Editar Usuário' : 'Adicionar Usuário'}</h1>
+                <h1 className={styles.title}>Adicionar Novo Usuário</h1>
                 <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
                         <label htmlFor="username">Login</label>

@@ -51,7 +51,7 @@ function App() {
                 <Route path="/despesas/:id" element={<PrivateRoute><NovoTipoDespesa /></PrivateRoute>} />
 
                 <Route path="/usuarios" element={<PrivateRoute><Usuarios /></PrivateRoute>} />
-                <Route path="/usuarios/:id" element={<PrivateRoute><Usuarios /></PrivateRoute>} />
+                <Route path="/usuarios/:id" element={<PrivateRoute><NovoUsuario /></PrivateRoute>} />
                 <Route path="/novo-usuario" element={<PrivateRoute><NovoUsuario /></PrivateRoute>} />
 
                 <Route path="/usuario/:id/caixas" element={<PrivateRoute><UserCaixas /></PrivateRoute>} />

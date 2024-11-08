@@ -4,12 +4,15 @@ import Table from '../components/Table';
 import Footer from '../components/Footer';
 import styles from '../styles/pages/Usuario.module.css';
 import { useNavigate } from 'react-router-dom';
-import { fetchUsers} from '../api/user';
+import { fetchUsers, updateUsuario } from '../api/user';
+import UserEditModal from '../components/UserEditModal';  // Novo Modal de Edição
 
 function Usuarios() {
     const navigate = useNavigate();
     const [usuarios, setUsuarios] = useState([]);
     const [generalError, setGeneralError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [userToEdit, setUserToEdit] = useState(null);
 
     useEffect(() => {
         const loadUsuarios = async () => {
@@ -36,14 +39,31 @@ function Usuarios() {
         navigate('/novo-usuario');
     };
 
-    const handleViewCaixas = (id) => {
-        navigate(`/usuarios/${id}/caixas`);
+    const handleEditClick = (user) => {
+        setUserToEdit(user);
+        setIsModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+        setUserToEdit(null);
+    };
+
+    const handleUpdateUser = async (updatedUser) => {
+        try {
+            await updateUsuario(updatedUser.id, updatedUser);
+            setUsuarios((prev) =>
+                prev.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+            );
+            handleModalClose();  // Fecha o modal após a atualização
+        } catch (error) {
+            handleBackendError(error);
+        }
     };
 
     const columns = [
-        { key: 'nome', label: 'Nome' },
+        { key: 'login', label: 'Login' },
         { key: 'email', label: 'Email' },
-        { key: 'permissoes', label: 'Permissoes' },
     ];
 
     const buttons = [
@@ -57,13 +77,20 @@ function Usuarios() {
                 <Table
                     data={usuarios}
                     columns={columns}
-                    onEditClick={(id) => navigate(`/usuarios/${id}`)}
-                    onCaixaClick={(id) => navigate(`/usuarios/caixas/${id}`)}
-                    onActionClick={handleViewCaixas}
-                    actionLabel="Ver Caixas"
+                    onEditClick={handleEditClick}
+                    caixas={true}
                 />
                 <Footer buttons={buttons} />
             </div>
+
+            {isModalOpen && userToEdit && (
+                <UserEditModal
+                    isOpen={isModalOpen}
+                    onClose={handleModalClose}
+                    user={userToEdit}
+                    onUpdateUser={handleUpdateUser}
+                />
+            )}
         </Dashboard>
     );
 }

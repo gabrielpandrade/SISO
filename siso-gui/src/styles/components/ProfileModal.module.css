@@ -25,7 +25,33 @@
     gap: 15px;
     position: relative;
 }
+.emailContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.editButton {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.checkboxContainer {
+    margin-top: 10px;
+}
+
+.checkboxContainer label {
+    display: flex;
+    align-items: center;
+}
+
+.checkboxContainer input {
+    margin-right: 8px;
+}
 h2 {
     font-size: 24px;
     margin-bottom: 15px;

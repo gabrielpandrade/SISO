@@ -28,9 +28,8 @@ const Dashboard = ({ children, error }) => {
         };
 
         const adminStatus = isAdmin();
-        console.log("admin", isAdmin())
-        setAdmin(true);
-       // setAdmin(adminStatus.PromiseResult);
+        console.log("ROLE_ADMIN", adminStatus)
+        setAdmin(adminStatus);
         fetchUserName();
         setError(error);
     }, [error]);
