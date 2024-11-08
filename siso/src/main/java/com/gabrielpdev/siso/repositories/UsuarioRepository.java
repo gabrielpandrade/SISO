@@ -1,5 +1,6 @@
 package com.gabrielpdev.siso.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.gabrielpdev.siso.models.Usuario;
@@ -14,5 +15,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
-    public Optional<Usuario> findByLogin(String login);
+    Optional<Usuario> findByLogin(String login);
+
+    List<Usuario> findAllByOrderByLogin();
 }

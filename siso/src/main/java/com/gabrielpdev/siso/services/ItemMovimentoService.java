@@ -48,7 +48,7 @@ public class ItemMovimentoService {
 
     public List<ItemMovimento> findByCaixaId(Long id_caixa) {
 
-        return itemMovimentoRepository.findByCaixa_Id(id_caixa);
+        return itemMovimentoRepository.findByCaixa_IdOrderByDataHoraMovimento(id_caixa);
     }
 
     @Transactional

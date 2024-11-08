@@ -21,7 +21,7 @@ public class TipoReceitaService {
     private TipoReceitaRepository tipoReceitaRepository;
 
     public List<TipoReceita> findAll() {
-        return tipoReceitaRepository.findAll();
+        return tipoReceitaRepository.findAllByOrderByDescricao();
     }
 
     public TipoReceita findById(Long id) {

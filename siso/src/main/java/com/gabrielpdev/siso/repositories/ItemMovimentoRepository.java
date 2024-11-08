@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ItemMovimentoRepository extends JpaRepository<ItemMovimento, Long> {
-    List<ItemMovimento> findByCaixa_Id(Long id_caixa);
+    List<ItemMovimento> findByCaixa_IdOrderByDataHoraMovimento(Long id_caixa);
 }

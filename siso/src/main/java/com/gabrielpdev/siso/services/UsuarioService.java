@@ -30,7 +30,7 @@ public class UsuarioService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+        return usuarioRepository.findAllByOrderByLogin();
     }
 
     public Usuario findById(Long id) {
