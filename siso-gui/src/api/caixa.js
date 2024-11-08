@@ -32,7 +32,6 @@ export const closeCaixa = async () => {
 export const checkCaixaStatus = async () => {
     try {
         const response = await api.get(`/caixa`);
-        console.log("response:", response);
         if (response.status === 200) {
             return true;
         }else{
@@ -45,11 +44,10 @@ export const checkCaixaStatus = async () => {
 };
 
 
-
-
 export const fetchMovimentoById = async (movimentoId) => {
     try {
         const response = await api.get(`/movimento/${movimentoId}`);
+        console.log("resposta:",response);
         if (response.status === 200) {
             console.log(response);
             return response.data;
@@ -61,10 +59,11 @@ export const fetchMovimentoById = async (movimentoId) => {
         throw error;
     }
 };
+
 export const fetchMovimentosByCaixa = async () => {
     try {
         const response = await api.get(`/caixa/movimentos`);
-        console.log('Response data:', response.data); // Log para inspecionar a resposta
+        console.log('Response data:', response.data);
         if (response.status === 200) {
             return response.data;
         } else {
@@ -76,13 +75,11 @@ export const fetchMovimentosByCaixa = async () => {
     }
 };
 
-
 export const getCaixaId = async() =>{
     try{
         const response = await api.get(`/caixa`);
         console.log("response:", response);
         if (response.status === 200) {
-            console.log("id_caixa", response.data);
             return response.data;
         }else{
             return null;
@@ -98,7 +95,6 @@ export const addMovimento = async (movimento) => {
             operacao: movimento.operacao || '',
             modalidadePagamento: movimento.modalidade || '',
             valor: movimento.valor !== undefined ? movimento.valor : 0,
-            dataHoraMovimento: movimento.dataHoraMovimento,
             id_tipo_despesa: movimento.id_tipo_despesa || null,
             id_tipo_receita: movimento.id_tipo_receita||null,
             id_dentista: movimento.id_dentista||null,
@@ -120,7 +116,6 @@ export const updateMovimento = async (id, movimento) => {
             operacao: movimento.operacao || '',
             modalidadePagamento: movimento.modalidade || '',
             valor: movimento.valor !== undefined ? movimento.valor : 0,
-            dataHoraMovimento: movimento.dataHoraMovimento,
             id_tipo_despesa: movimento.id_tipo_despesa || null,
             id_tipo_receita: movimento.id_tipo_receita||null,
             id_dentista: movimento.id_dentista||null,

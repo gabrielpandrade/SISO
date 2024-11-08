@@ -12,23 +12,18 @@ import {
     updateMovimento,
     deleteMovimento,
     fetchMovimentosByCaixa,
-    checkCaixaStatus
+    checkCaixaStatus, getMovimento, fetchMovimentoById
 } from '../api/caixa';
 
 function NovoMovimento() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const dataHora = new Date();
-    const offset = dataHora.getTimezoneOffset();
-    const adjustedDate = new Date(dataHora.getTime() - offset * 60000).toISOString();
-
     const [movimento, setMovimento] = useState({
         operacao: null,
         modalidade: null,
         valor: null,
         descricao: null,
-        dataHora: new Date(dataHora.getTime()).toISOString(),
         taxa: 5,
         dentista: null,
         fornecedor: null,
@@ -79,12 +74,11 @@ function NovoMovimento() {
                 setTipoDespesas(tipoDespesasData);
 
                 if (id) {
-                    const movimentoData = await fetchMovimentosByCaixa();
-                    const movimentoToEdit = movimentoData.find(m => m.id === parseInt(id));
+                    const movimentoToEdit = await fetchMovimentoById(id);
                     if (movimentoToEdit) {
                         setMovimento({
                             ...movimentoToEdit,
-                            dataHora: new Date(movimentoToEdit.dataHora),
+                            dataHora: movimentoToEdit.dataHora,
                             modalidade: movimentoToEdit.operacao === 'Sangria' || movimentoToEdit.operacao === 'Aporte' ? 'Dinheiro' : movimentoToEdit.modalidade
                         });
                         setIsEditing(true);
@@ -116,7 +110,6 @@ function NovoMovimento() {
                 operacao: movimento.operacao,
                 modalidade: movimento.modalidade,
                 valor: parseFloat(movimento.valor),
-                dataHoraMovimento: adjustedDate,
                 id_tipo_receita: movimento.tipoReceita ? parseInt(movimento.tipoReceita) : null,
                 id_tipo_despesa: movimento.tipoDespesa ? parseInt(movimento.tipoDespesa) : null,
                 id_dentista: movimento.dentista ? parseInt(movimento.dentista) : null,
@@ -207,17 +200,6 @@ function NovoMovimento() {
                                 <option value="Receita">Receita</option>
                                 <option value="Despesa">Despesa</option>
                             </select>
-                        </div>
-                        <div className={styles.formGroupHalf}>
-                            <label htmlFor="dataHora">Data e Hora</label>
-                            <input
-                                id="dataHora"
-                                name="dataHora"
-                                type="datetime-local"
-                                value={movimento.dataHora}
-                                onChange={handleChange}
-                                readOnly
-                            />
                         </div>
                     </div>
                     {movimento.operacao === 'Receita' && (

@@ -28,6 +28,7 @@ public class ItemMovimentoController {
 
     @GetMapping("/movimento/{id_movimento}")
     public ResponseEntity<ItemMovimento> getItem(@PathVariable Long id_movimento){
+        System.out.println(id_movimento);
         ItemMovimento itemMovimento = itemMovimentoService.findById(id_movimento);
         return ResponseEntity.ok().body(itemMovimento);
     }

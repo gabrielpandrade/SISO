@@ -1,5 +1,6 @@
 package com.gabrielpdev.siso.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class ItemMovimento {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_caixa", nullable = false)
+    @JsonIgnore
     private Caixa caixa;
 
     @ManyToOne(fetch = FetchType.LAZY)
