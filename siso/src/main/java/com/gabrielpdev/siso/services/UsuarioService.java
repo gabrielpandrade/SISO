@@ -10,6 +10,7 @@ import com.gabrielpdev.siso.models.CustomUserDetails;
 import com.gabrielpdev.siso.models.exceptions.AuthorizationException;
 import com.gabrielpdev.siso.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,10 @@ public class UsuarioService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<Usuario> findAll() {
-        return usuarioRepository.findAllByOrderByLogin();
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        Usuario usuario = findById(authenticated().getId());
+        usuarios.remove(usuario);
+        return usuarios;
     }
 
     public Usuario findById(Long id) {
@@ -105,7 +109,7 @@ public class UsuarioService {
     public Usuario mergeDTO(UsuarioPasswordUpdateDTO usuarioPasswordUpdateDTO, Long id) {
         Usuario usuario = this.findById(id);
         if(!bCryptPasswordEncoder.matches(usuarioPasswordUpdateDTO.getSenha_old(), usuario.getSenha())) {
-            throw new RuntimeException("Senha incorreta.");
+            throw new AccessDeniedException("Senha incorreta.");
         }
         usuario.setSenha(bCryptPasswordEncoder.encode(usuarioPasswordUpdateDTO.getSenha_new()));
         return usuario;
