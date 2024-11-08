@@ -44,18 +44,21 @@ function Usuarios() {
         setIsModalOpen(true);
     };
 
-    const handleModalClose = () => {
+    const handleModalClose = async () => {
         setIsModalOpen(false);
         setUserToEdit(null);
+        try {
+            const updatedList = await fetchUsers(); // Atualiza a lista de usuários ao fechar o modal
+            setUsuarios(updatedList);
+        } catch (error) {
+            handleBackendError(error);
+        }
     };
 
     const handleUpdateUser = async (updatedUser) => {
         try {
             await updateUsuario(updatedUser.id, updatedUser);
-            setUsuarios((prev) =>
-                prev.map((user) => (user.id === updatedUser.id ? updatedUser : user))
-            );
-            handleModalClose();  // Fecha o modal após a atualização
+            handleModalClose(); // Fecha o modal e atualiza a tabela após a atualização
         } catch (error) {
             handleBackendError(error);
         }
@@ -64,6 +67,11 @@ function Usuarios() {
     const columns = [
         { key: 'login', label: 'Login' },
         { key: 'email', label: 'Email' },
+        {
+            key: 'isAdmin',
+            label: 'Admin',
+            render: (row) => (row.permissoes.includes('ROLE_ADMIN') ? 'Sim' : 'Não')
+        }
     ];
 
     const buttons = [
