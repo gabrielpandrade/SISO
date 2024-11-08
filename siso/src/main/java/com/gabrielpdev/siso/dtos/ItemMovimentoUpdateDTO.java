@@ -17,8 +17,6 @@ public class ItemMovimentoUpdateDTO implements Serializable {
     String modalidadePagamento;
     @NotNull
     Float valor;
-    @NotNull
-    OffsetDateTime dataHoraMovimento;
     Long id_tipo_despesa;
     Long id_tipo_receita;
     Long id_dentista;

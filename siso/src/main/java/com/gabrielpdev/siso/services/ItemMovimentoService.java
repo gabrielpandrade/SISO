@@ -46,6 +46,11 @@ public class ItemMovimentoService {
         return itemMovimentoRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("O itemMovimento {id: {"+id+"}} não foi encontrado"));
     }
 
+    public List<ItemMovimento> findByCaixaId(Long id_caixa) {
+
+        return itemMovimentoRepository.findByCaixa_Id(id_caixa);
+    }
+
     @Transactional
     public void createItemMovimento(ItemMovimento itemMovimento) {
         itemMovimento.setId(null);
@@ -81,7 +86,6 @@ public class ItemMovimentoService {
         itemMovimento.setOperacao(capitalize(itemMovimentoDTO.getOperacao()));
         itemMovimento.setModalidadePagamento(capitalize(itemMovimentoDTO.getModalidadePagamento()));
         itemMovimento.setValor(itemMovimentoDTO.getValor());
-        itemMovimento.setDataHoraMovimento(itemMovimentoDTO.getDataHoraMovimento());
         itemMovimento.setCaixa(caixaService.getCaixaById(itemMovimentoDTO.getId_caixa()));
         if(Objects.nonNull(itemMovimentoDTO.getId_tipo_despesa())) {
             itemMovimento.setTipoDespesa(tipoDespesaService.findById(itemMovimentoDTO.getId_tipo_despesa()));
@@ -103,7 +107,6 @@ public class ItemMovimentoService {
         itemMovimento.setOperacao(capitalize(itemMovimentoDTO.getOperacao()));
         itemMovimento.setModalidadePagamento(capitalize(itemMovimentoDTO.getModalidadePagamento()));
         itemMovimento.setValor(itemMovimentoDTO.getValor());
-        itemMovimento.setDataHoraMovimento(itemMovimentoDTO.getDataHoraMovimento());
         if(Objects.nonNull(itemMovimentoDTO.getId_tipo_despesa())) {
             itemMovimento.setTipoDespesa(tipoDespesaService.findById(itemMovimentoDTO.getId_tipo_despesa()));
         }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.OffsetDateTime;
 
 @RestController
 public class ItemMovimentoController {
@@ -21,6 +22,7 @@ public class ItemMovimentoController {
     @PostMapping("/movimento")
     public ResponseEntity<ItemMovimento> addItem(@RequestBody @Valid ItemMovimentoDTO item){
         ItemMovimento newItem = itemMovimentoService.fromDTO(item);
+        newItem.setDataHoraMovimento(OffsetDateTime.now());
         itemMovimentoService.createItemMovimento(newItem);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id_movimento}").buildAndExpand(newItem.getId()).toUri();
         return ResponseEntity.created(uri).build();

@@ -21,8 +21,6 @@ public class ItemMovimentoDTO implements Serializable {
     @NotNull
     Float valor;
     @NotNull
-    OffsetDateTime dataHoraMovimento;
-    @NotNull
     Long id_caixa;
     Long id_tipo_despesa;
     Long id_tipo_receita;

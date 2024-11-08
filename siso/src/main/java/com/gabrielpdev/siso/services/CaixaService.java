@@ -63,9 +63,4 @@ public class CaixaService {
 
         this.caixaRepository.save(caixa.get());
     }
-
-    public List<ItemMovimento> getItemMovimentosByCaixaId(Long id) {
-        Caixa caixa = getCaixaById(id);
-        return caixa.getItemMovimentos();
-    }
 }
