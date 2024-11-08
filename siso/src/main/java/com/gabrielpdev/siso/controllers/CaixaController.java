@@ -59,6 +59,7 @@ public class CaixaController {
         Optional<Caixa> caixa_opt = caixaService.getCaixaAberto(id);
         Caixa caixa = caixa_opt.orElseThrow(() -> new DataIntegrityViolationException("O caixa está fechado"));
         List<ItemMovimento> movimentos = itemMovimentoService.findByCaixaId(caixa.getId());
+        System.out.println(movimentos);
         return ResponseEntity.ok().body(movimentos);
     }
 
