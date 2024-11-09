@@ -60,6 +60,13 @@
 		<finalName>siso</finalName>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -80,6 +87,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.itext</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.13.2</version>
 		</dependency>
 
 		<dependency>
