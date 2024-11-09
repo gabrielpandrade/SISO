@@ -147,7 +147,7 @@ export const downloadRelatorioCaixas = async () => {
             id_dentista: null
         }
 
-        const response = await api.post(`/caixas`, payload,{
+        const response = await api.post(`/relatorio`, payload,{
             responseType: 'blob'
         });
 
