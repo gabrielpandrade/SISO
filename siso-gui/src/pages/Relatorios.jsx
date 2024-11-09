@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Dashboard from '../components/Dashboard'; // Ajuste o caminho conforme necessário
-import Footer from '../components/Footer'; // Ajuste o caminho conforme necessário
-import { downloadRelatorioCaixas } from '../api/caixa'; // Ajuste o caminho conforme necessário
-import { saveAs } from 'file-saver'; // Para o download do PDF
+import Dashboard from '../components/Dashboard';
+import Footer from '../components/Footer';
+import { downloadRelatorioCaixas } from '../api/caixa';
+import { saveAs } from 'file-saver';
 import styles from '../styles/pages/Relatorios.module.css';
 import { fetchDentistas } from '../api/dentistas';
 
 const Relatorios = () => {
-    const [error, setError] = useState({});
+    const [error, setError] = useState(null);
     const [isGenerating, setIsGenerating] = useState(false);
     const [generalError, setGeneralError] = useState(null);
     const [formData, setFormData] = useState({
@@ -17,17 +17,6 @@ const Relatorios = () => {
     });
     const [dentistas, setDentistas] = useState([]);
 
-    // Função para tratar erros do backend
-    const handleBackendError = (error) => {
-        if (error.response && error.response.data) {
-            setGeneralError('Erro: ' + (error.response.data.message || 'Erro desconhecido'));
-        } else {
-            setGeneralError('Erro de conexão ou problema desconhecido.');
-        }
-        console.error('Erro:', error);
-    };
-
-    // Função para buscar os dentistas do backend
     useEffect(() => {
         const fetchDentistasData = async () => {
             try {
@@ -41,56 +30,58 @@ const Relatorios = () => {
         fetchDentistasData();
     }, []);
 
-    // Função para atualizar o estado do formulário
+    const handleBackendError = (error) => {
+        if (error.response && error.response.data) {
+            setGeneralError('Erro: ' + (error.response.data.message || 'Erro desconhecido'));
+        } else {
+            setGeneralError('Erro de conexão ou problema desconhecido.');
+        }
+        console.error('Erro:', error);
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
             ...formData,
             [name]: value,
         });
-        setError({ ...error, [name]: '' }); // Limpa o erro ao alterar o valor
+        setError(null);
     };
 
-    // Função para validar os campos de data
-    const validateFields = () => {
-        const newErrors = {};
-        const now = new Date();
+    const validateDates = () => {
+        const currentDate = new Date().toISOString().split('T')[0];
+        const { data_inicio, data_fim } = formData;
 
-        if (!formData.data_inicio) {
-            newErrors.data_inicio = 'O campo Data Início é obrigatório.';
-        } else {
-            const dataInicio = new Date(formData.data_inicio);
-            if (dataInicio > now) {
-                newErrors.data_inicio = 'A data de início não pode ser no futuro.';
-            }
+        if (!data_inicio) {
+            setError('O campo "Data Início" é obrigatório.');
+            return false;
         }
-
-        if (!formData.data_fim) {
-            newErrors.data_fim = 'O campo Data Fim é obrigatório.';
-        } else {
-            const dataFim = new Date(formData.data_fim);
-            if (dataFim > now) {
-                newErrors.data_fim = 'A data de fim não pode ser no futuro.';
-            }
-
-            if (formData.data_inicio && new Date(formData.data_inicio) > dataFim) {
-                newErrors.data_fim = 'A data de fim não pode ser anterior à data de início.';
-            }
+        if (!data_fim) {
+            setError('O campo "Data Fim" é obrigatório.');
+            return false;
         }
-
-        setError(newErrors);
-        return Object.keys(newErrors).length === 0;
+        if (data_inicio > currentDate || data_fim > currentDate) {
+            setError('As datas não podem ser maiores que a data atual.');
+            return false;
+        }
+        if (data_inicio > data_fim) {
+            setError('A "Data Início" não pode ser maior que a "Data Fim".');
+            return false;
+        }
+        return true;
+    };
+    const ajustarDataParaOffsetDateTime = (dataString) => {
+        // Adiciona o fuso horário local se necessário
+        return dataString ? `${dataString}:00Z` : null; // Adiciona segundos e 'Z' para UTC
     };
 
-    // Função para gerar e baixar o relatório
     const handleGenerateReport = async () => {
-        setIsGenerating(true);
-        setGeneralError(null);
-
-        if (!validateFields()) {
-            setIsGenerating(false);
+        if (!validateDates()) {
             return;
         }
+
+        setIsGenerating(true);
+        setError(null);
 
         try {
             const url = await downloadRelatorioCaixas(formData);
@@ -125,7 +116,6 @@ const Relatorios = () => {
                             value={formData.data_inicio}
                             onChange={handleChange}
                         />
-                        {error.data_inicio && <span className={styles.error}>{error.data_inicio}</span>}
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="data_fim">Data Fim</label>
@@ -136,7 +126,6 @@ const Relatorios = () => {
                             value={formData.data_fim}
                             onChange={handleChange}
                         />
-                        {error.data_fim && <span className={styles.error}>{error.data_fim}</span>}
                     </div>
                     <div className={styles.formGroup}>
                         <label htmlFor="id_dentista">Dentista</label>
@@ -147,7 +136,6 @@ const Relatorios = () => {
                             onChange={handleChange}
                         >
                             <option value="">Selecione um dentista</option>
-                            <option value="">Nenhum</option>
                             {dentistas.map((dentista) => (
                                 <option key={dentista.id} value={dentista.id}>
                                     {dentista.nome}
@@ -155,9 +143,9 @@ const Relatorios = () => {
                             ))}
                         </select>
                     </div>
+                    {error && <p className={styles.error}>{error}</p>}
                 </form>
                 <Footer buttons={buttons} />
-                {generalError && <p className={styles.error}>{generalError}</p>}
             </div>
         </Dashboard>
     );

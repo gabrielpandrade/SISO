@@ -138,23 +138,28 @@ export const deleteMovimento = async (id) => {
         throw error;
     }
 };
-
 export const downloadRelatorioCaixas = async (requisicao) => {
     try {
-        const payload={
-            data_inicio:requisicao.data_inicio,
-            data_fim:requisicao.data_fim,
-            id_dentista: requisicao.id_dentista?requisicao.id_dentista:null,
-        }
+        const payload = {
+            data_inicio: `${requisicao.data_inicio}-03:00`,
+            data_fim: `${requisicao.data_fim}-03:00`,
+            id_dentista: requisicao.id_dentista ? requisicao.id_dentista : null,
+        };
+        console.log("data:", payload);
+        const response = await api.post(`/relatorio`, payload, { responseType: 'arraybuffer' }); // Assegura que a resposta seja tratada como um array de bytes
+        console.log("resposta", response);
 
-        const response = await api.post(`/relatorio`, payload,{
-            responseType: 'blob'
-        });
+        const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        return url;
+        // Abre o PDF em uma nova guia
+        window.open(url, '_blank');
+
+        // Libera o objeto URL depois do uso
+        window.URL.revokeObjectURL(url);
+
     } catch (error) {
         console.error('Erro ao gerar o relatório:', error);
         throw error;
     }
 };
+
