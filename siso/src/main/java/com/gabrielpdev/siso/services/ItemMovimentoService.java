@@ -52,12 +52,12 @@ public class ItemMovimentoService {
         return itemMovimentoRepository.findByCaixa_IdOrderByDataHoraMovimento(id_caixa);
     }
 
-    public List<ItemMovimento> findByDataBetween(Long id_usuario, OffsetDateTime data_inicio, OffsetDateTime data_fim) {
-        return itemMovimentoRepository.findByCaixa_Usuario_IdAndDataHoraMovimentoBetween(id_usuario, data_inicio, data_fim);
+    public List<ItemMovimento> findByDataBetween(OffsetDateTime data_inicio, OffsetDateTime data_fim) {
+        return itemMovimentoRepository.findByDataHoraMovimentoBetween(data_inicio, data_fim);
     }
 
-    public List<ItemMovimento> findByDataBetweenDentista(Long id_usuario, Long id_dentista, OffsetDateTime data_inicio, OffsetDateTime data_fim) {
-        return itemMovimentoRepository.findByCaixa_Usuario_IdAndDentista_IdAndDataHoraMovimentoBetween(id_usuario, id_dentista, data_inicio, data_fim);
+    public List<ItemMovimento> findByDataBetweenDentista(Long id_dentista, OffsetDateTime data_inicio, OffsetDateTime data_fim) {
+        return itemMovimentoRepository.findByDentista_IdAndDataHoraMovimentoBetween(id_dentista, data_inicio, data_fim);
     }
 
     @Transactional
