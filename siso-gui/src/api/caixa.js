@@ -139,12 +139,12 @@ export const deleteMovimento = async (id) => {
     }
 };
 
-export const downloadRelatorioCaixas = async () => {
+export const downloadRelatorioCaixas = async (requisicao) => {
     try {
         const payload={
-            data_inicio:"2022-11-08T15:30:00-03:00",
-            data_fim:"2025-11-08T15:30:00-03:00",
-            id_dentista: null
+            data_inicio:requisicao.data_inicio,
+            data_fim:requisicao.data_fim,
+            id_dentista: requisicao.id_dentista?requisicao.id_dentista:null,
         }
 
         const response = await api.post(`/relatorio`, payload,{
