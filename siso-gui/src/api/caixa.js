@@ -141,7 +141,13 @@ export const deleteMovimento = async (id) => {
 
 export const downloadRelatorioCaixas = async () => {
     try {
-        const response = await api.get(`/caixas`, {
+        const payload={
+            data_inicio:"2022-11-08T15:30:00-03:00",
+            data_fim:"2025-11-08T15:30:00-03:00",
+            id_dentista: null
+        }
+
+        const response = await api.post(`/caixas`, payload,{
             responseType: 'blob'
         });
 
