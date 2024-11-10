@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,13 +19,15 @@ import java.util.List;
 @Service
 public class RelatorioService {
 
-    public void criarPdf(String filePath, List<ItemMovimento> movimentos, OffsetDateTime inicio, OffsetDateTime fim) throws DocumentException, IOException, FileNotFoundException {
+    public byte[] criarPdf(List<ItemMovimento> movimentos, OffsetDateTime inicio, OffsetDateTime fim) throws DocumentException, IOException, FileNotFoundException {
         Document document = new Document(PageSize.A4);
-        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        PdfWriter.getInstance(document, outputStream);
         document.open();
 
         // Adiciona a imagem da logo no canto da folha
-        Image logo = Image.getInstance("siso/src/main/java/com/gabrielpdev/siso/services/logo.png"); // Use o caminho correto para o arquivo PNG
+        Image logo = Image.getInstance("src/main/java/com/gabrielpdev/siso/services/logo.png"); // Use o caminho correto para o arquivo PNG
         logo.setAbsolutePosition(450, 750); // Ajuste a posição conforme necessário (x, y)
         logo.scaleToFit(100, 50); // Redimensiona a imagem para caber no espaço desejado
         document.add(logo);
@@ -214,5 +218,7 @@ public class RelatorioService {
         document.add(tabela);
         document.add(tabelaTotais);
         document.close();
+
+        return outputStream.toByteArray();
     }
 }
