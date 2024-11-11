@@ -49,19 +49,23 @@ const Relatorios = () => {
     };
 
     const validateDates = () => {
-        const currentDate = new Date().toISOString().split('T')[0];
-        const { data_inicio, data_fim } = formData;
+        const currentDate = new Date();
+        const tomorrow = new Date(currentDate);
+        tomorrow.setDate(currentDate.getDate() + 1);
 
-        if (!data_inicio) {
+        const data_inicio = new Date(formData.data_inicio);
+        const data_fim = new Date(formData.data_fim);
+
+        if (!formData.data_inicio) {
             setError('O campo "Data Início" é obrigatório.');
             return false;
         }
-        if (!data_fim) {
+        if (!formData.data_fim) {
             setError('O campo "Data Fim" é obrigatório.');
             return false;
         }
-        if (data_inicio > currentDate || data_fim > currentDate) {
-            setError('As datas não podem ser maiores que a data atual.');
+        if (data_inicio > tomorrow || data_fim > tomorrow) {
+            setError('As datas não podem ser maiores que a data atual mais um dia.');
             return false;
         }
         if (data_inicio > data_fim) {
@@ -70,6 +74,7 @@ const Relatorios = () => {
         }
         return true;
     };
+
     const ajustarDataParaOffsetDateTime = (dataString) => {
         // Adiciona o fuso horário local se necessário
         return dataString ? `${dataString}:00Z` : null; // Adiciona segundos e 'Z' para UTC
@@ -110,7 +115,7 @@ const Relatorios = () => {
                     <div className={styles.formGroup}>
                         <label htmlFor="data_inicio">Data Início</label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             id="data_inicio"
                             name="data_inicio"
                             value={formData.data_inicio}
@@ -120,7 +125,7 @@ const Relatorios = () => {
                     <div className={styles.formGroup}>
                         <label htmlFor="data_fim">Data Fim</label>
                         <input
-                            type="datetime-local"
+                            type="date"
                             id="data_fim"
                             name="data_fim"
                             value={formData.data_fim}
@@ -135,7 +140,8 @@ const Relatorios = () => {
                             value={formData.id_dentista}
                             onChange={handleChange}
                         >
-                            <option value="">Selecione um dentista</option>
+                            <option value=" ">Selecione um dentista</option>
+                            <option value="">Nenhum</option>
                             {dentistas.map((dentista) => (
                                 <option key={dentista.id} value={dentista.id}>
                                     {dentista.nome}

@@ -141,8 +141,8 @@ export const deleteMovimento = async (id) => {
 export const downloadRelatorioCaixas = async (requisicao) => {
     try {
         const payload = {
-            data_inicio: `${requisicao.data_inicio}-03:00`,
-            data_fim: `${requisicao.data_fim}-03:00`,
+            data_inicio: `${requisicao.data_inicio}T00:00-03:00`,
+            data_fim: `${requisicao.data_fim}T00:00-03:00`,
             id_dentista: requisicao.id_dentista ? requisicao.id_dentista : null,
         };
         console.log("data:", payload);

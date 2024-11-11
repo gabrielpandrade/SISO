@@ -11,6 +11,7 @@ function Caixa() {
     const [caixaAberto, setCaixaAberto] = useState(false);
     const [generalError, setGeneralError] = useState(null);
     const navigate = useNavigate();
+    const [caixaVazio, setCaixaVazio] = useState(true)
 
     useEffect(() => {
         const loadCaixaStatus = async () => {
@@ -20,6 +21,9 @@ function Caixa() {
                 if (status) {
                     const movementsData = await fetchMovimentosByCaixa();
                     setMovements(formatData(movementsData));
+                    if(!(movementsData)){
+                        setCaixaVazio(false);
+                    }
                 } else {
                     setMovements([]);
                 }
@@ -74,6 +78,7 @@ function Caixa() {
             } else {
                 setCaixaAberto(false);
                 setMovements([]);
+                setCaixaVazio(true);
             }
         } catch (error) {
             handleBackendError(error);
@@ -111,7 +116,7 @@ function Caixa() {
                     </div>
                 ) : (
                     <>
-                        <Table data={movements} columns={columns} onEditClick={(id) => navigate(`/item-movimento/${id}`)}/>
+                        <Table data={movements} caixaVazio={caixaVazio} columns={columns} onEditClick={(id) => navigate(`/item-movimento/${id}`)}/>
                         <div className={styles.footerWrapper}>
                             <Footer buttons={footerButtons} />
                         </div>
