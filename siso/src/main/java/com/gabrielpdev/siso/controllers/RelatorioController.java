@@ -40,9 +40,8 @@ public class RelatorioController {
         }else {
             lista = itemMovimentoService.findByDataBetween(relatorioDTO.getData_inicio(), relatorioDTO.getData_fim());
         }
-        relatorioService.criarPdf("relatorio.pdf", lista, relatorioDTO.getData_inicio(), relatorioDTO.getData_fim());
-        Path pdfPath = Paths.get("relatorio.pdf");
-        ByteArrayInputStream bis = new ByteArrayInputStream(Files.readAllBytes(pdfPath));
+        byte[] pdfBytes = relatorioService.criarPdf(lista, relatorioDTO.getData_inicio(), relatorioDTO.getData_fim());
+        ByteArrayInputStream bis = new ByteArrayInputStream(pdfBytes);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=relatorio.pdf");
