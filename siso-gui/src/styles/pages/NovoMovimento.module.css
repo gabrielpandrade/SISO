@@ -13,6 +13,15 @@
     text-align: center;
     color: #333;
 }
+.inputWithPrefix {
+    display: flex;
+    align-items: center;
+}
+
+.prefix {
+    margin-right: 5px;
+    font-weight: bold;
+}
 
 .form {
     display: flex;

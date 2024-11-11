@@ -191,8 +191,7 @@ function NovoMovimento() {
 
     const handleValorChange = (e) => {
         let value = e.target.value;
-
-        value = value.replace(/[^\d,]/g, '');
+        value = value.replace(/[^\d,]/g, ''); // Remove caracteres que não sejam dígitos ou vírgula
 
         if (value.indexOf(',') !== -1) {
             const parts = value.split(',');
@@ -203,14 +202,10 @@ function NovoMovimento() {
             value = value.replace(/\D/g, ''); // Remove não-dígitos
         }
 
-        // Adiciona a vírgula para os centavos se o valor for suficientemente longo
-        if (value.length > 2) {
-            value = value.replace(/(\d+)(\d{2})$/, '$1,$2'); // Coloca a vírgula antes dos últimos 2 dígitos
-        }
-
-        // Atualiza o estado com o valor formatado
         setMovimento((prev) => ({ ...prev, valor: value }));
     };
+
+
 
 
     const sanitizeValor = (valorFormatado) => {
@@ -380,18 +375,20 @@ function NovoMovimento() {
                     <div className={styles.formGroup}>
                         <label htmlFor="valor">Valor</label>
                         {errors.valor && <span className={styles.error}>{errors.valor}</span>}
-                        <InputMask
-                            mask="R$ 999.999.999,99" // Máscara de valor monetário
-                            id="valor"
-                            name="valor"
-                            value={movimento.valor}
-                            onChange={(e) => handleValorChange(e)} // Chama a função para atualizar o valor
-                            onFocus={(e) => e.target.select()} // Seleciona o valor ao focar
-                            maskChar="" // Evita o uso do caractere de máscara como espaços
-                        >
-                            {(inputProps) => <input {...inputProps} type="text"/>}
-                        </InputMask>
+                        <div className={styles.inputWithPrefix}>
+                            <span className={styles.prefix}>R$</span>
+                            <input
+                                id="valor"
+                                name="valor"
+                                value={movimento.valor}
+                                onChange={(e) => handleValorChange(e)} // Chama a função de atualização
+                                onFocus={(e) => e.target.select()} // Seleciona todo o conteúdo ao focar
+                                type="text"
+                                placeholder="0,00" // Sugestão de formato para o usuário
+                            />
+                        </div>
                     </div>
+
                     <div className={styles.formGroup}>
                         <label htmlFor="descricao">Descrição</label>
                         {errors.descricao && <span className={styles.error}>{errors.descricao}</span>}

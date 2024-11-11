@@ -50,10 +50,23 @@ function Caixa() {
             modalidade: item.modalidadePagamento,
             fornecedor: item.fornecedor ? item.fornecedor.nome : '-',
             dentista: item.dentista ? item.dentista.nome : '-',
-            valor: item.valor ? item.valor.toFixed(2) : '0.00',
-            dataHora: item.dataHoraMovimento ? item.dataHoraMovimento: 'Data não disponível',
+            valor: item.valor ? `R$ ${item.valor.toFixed(2)}` : 'R$ 0.00', // Adicionado o prefixo 'R$'
+            dataHora: item.dataHoraMovimento ? formatDate(item.dataHoraMovimento) : 'Data não disponível',
             tipo: item.receita ? item.receita.descricao : (item.despesa ? item.despesa.descricao : '-')
         }));
+    };
+
+// Função auxiliar para formatar data
+    const formatDate = (timestamp) => {
+        const date = new Date(timestamp*1000);
+        return date.toLocaleString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '0-digit'
+        });
     };
 
     const handleOpenCaixa = async () => {
