@@ -124,7 +124,8 @@ function NovoMovimento() {
                 id_tipo_receita: movimento.tipoReceita ? parseInt(movimento.tipoReceita) : null,
                 id_tipo_despesa: movimento.tipoDespesa ? parseInt(movimento.tipoDespesa) : null,
                 id_dentista: movimento.dentista ? parseInt(movimento.dentista) : null,
-                id_fornecedor: movimento.fornecedor && movimento.fornecedor !== 'Nenhum' ? parseInt(movimento.fornecedor) : null
+                id_fornecedor: movimento.fornecedor && movimento.fornecedor !== 'Nenhum' ? parseInt(movimento.fornecedor) : null,
+                descricao:movimento.descricao,
             };
 
             if (isEditing) {
@@ -354,7 +355,7 @@ function NovoMovimento() {
                                 <option value="Crédito">Crédito</option>
                                 <option value="Débito">Débito</option>
                                 <option value="PIX">PIX</option>
-                                <option value="Cheque">Cheque</option>
+                                <option value="Boleto">Cheque</option>
                             </select>
                         </div>
                     )}
