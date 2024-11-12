@@ -52,7 +52,7 @@ function Caixa() {
             dentista: item.dentista ? item.dentista.nome : '-',
             valor: item.valor ? `R$ ${item.valor.toFixed(2)}` : 'R$ 0.00', // Adicionado o prefixo 'R$'
             dataHora: item.dataHoraMovimento ? formatDate(item.dataHoraMovimento) : 'Data não disponível',
-            tipo: item.receita ? item.receita.descricao : (item.despesa ? item.despesa.descricao : '-')
+            tipo: item.tipoReceita ? item.tipoReceita.descricao : (item.tipoDespesa ? item.tipoDespesa.descricao : '-')
         }));
     };
 
